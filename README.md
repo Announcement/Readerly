@@ -27,6 +27,15 @@ cd Readerly
 npm install
 ```
 
+## Update
+
+If you already cloned the directory do this inside of it.
+
+``` command
+git stash
+git pull
+```
+
 ### Compile the code
 
 You only need to do one of these.
