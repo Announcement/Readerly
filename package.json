@@ -45,7 +45,7 @@
     "build-min": "npm run-script rollup && npm run-script webpack && npm run-script uglify",
     "babel": "babel source -d header",
     "babelify": "browserify script.js -t babelify --outfile bundle.js",
-    "browserify": "browserify main.js -o bundle.js",
+    "browserify": "browserify original/main.js -o distribution/bundle.js",
     "watch": "watch 'npm run build' ./lib"
   },
   "repository": {

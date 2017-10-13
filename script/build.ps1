@@ -6,6 +6,9 @@ Set-Variable -Name outfile -Value "bundle.js"
 Write-Output -InputObject "browserify $entry --outfile $outfile"
 Invoke-Expression -Command "$bin/browserify $entry --outfile $outfile"
 
+Copy-Item -Path .\original\* -Recurse -Exclude *.js -Destination .\distribution\
+Copy-Item -Path .\original\background.js -Destination .\distribution\
+
 #Write-Output -InputObject "rollup -c -i $entry -o working/build.stage1.js"
 #Invoke-Expression -Command "$bin/rollup -c -i $entry -o working/build.stage1.js"
 #
