@@ -38,36 +38,6 @@ git pull
 
 ### Compile the code
 
-You only need to do one of these.
-
-#### Build with the Powershell
-
-- Windows 10
-
-``` powershell
-./script/build.ps1
-```
-
-#### Build with the Command Prompt
-
-- Windows NT
-
-``` cmd
-script\build.bat
-```
-
-#### Build with the Unix Shell
-
-- Linux
-- BSD
-- MacOS
-
-``` sh
-script/build.sh
-```
-
-#### Build with npm
-
 - Any Operating System with Node.js installed.
 
 ``` command
