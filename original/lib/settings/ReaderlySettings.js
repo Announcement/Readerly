@@ -1,9 +1,9 @@
 /* ReaderlySettings.js
-* 
+*
 * Should manage settings. Don't put them directly in here
 * one by one. This should have functions that allow this
 * object to be extended.
-* 
+*
 * TODO:
 * ??: Add events/buttons for things like opening and closing settings?
 * - ??: Don't close settings when closing readerly? If they were there
@@ -149,7 +149,7 @@
 
 			rSet._isOpen = true;
 			coreDisplay.update();
-			
+
 			return rSet;
 		};
 
@@ -157,10 +157,10 @@
 		// Allowed to be called externally
 			$(coreDisplay.nodes.below).addClass('__rdly-hidden');
 			$(opener).removeClass( '__rdly-active-ui' );  // different style
-			
+
 			rSet._isOpen = false;
 			coreDisplay.update();
-			
+
 			return rSet;
 		};
 
@@ -182,7 +182,7 @@
 
 		rSet._addBase = function ( coreDisplay ) {
 			var browser = chrome || browser,
-	     		setPath = browser.extension.getURL('images/settings.png');
+	     		setPath = browser.extension.getURL('distribution/images/settings.png');
 	    		var $open = $('<button id="__rdly_open_settings" class="__rdly-big-menu-button">\
                                        <img class="__rdly-big-menu-button-image" src="' + setPath + '"></img>\
                                        </button>'),
@@ -206,7 +206,7 @@
 			var $css 		= $(settingsCSSstr);
 			$css.appendTo( head );
 
-			return rSet;	
+			return rSet;
 		};
 
 

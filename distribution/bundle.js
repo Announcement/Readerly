@@ -51270,12 +51270,12 @@ module.exports={
 // </div>';
 
 		var browser = chrome || browser,
-        rewPath = browser.extension.getURL('images/rewind.png');
+        rewPath = browser.extension.getURL('distribution/images/rewind.png');
         var rewindSentenceStr = '<button id="__rdly_rewind-sentence" class="__rdly-big-menu-button">\
     	<img src="' + rewPath + '"></img>\
     </button>';
 
-var fontPath = browser.extension.getURL('fonts/ClearSansLight.ttf');
+var fontPath = browser.extension.getURL('distribution/fonts/ClearSansLight.ttf');
 
 		// =========== RUNTIME ACTIONS =========== \\
 
@@ -52674,11 +52674,11 @@ var fontPath = browser.extension.getURL('fonts/ClearSansLight.ttf');
 
 },{}],134:[function(require,module,exports){
 /* ReaderlySettings.js
-* 
+*
 * Should manage settings. Don't put them directly in here
 * one by one. This should have functions that allow this
 * object to be extended.
-* 
+*
 * TODO:
 * ??: Add events/buttons for things like opening and closing settings?
 * - ??: Don't close settings when closing readerly? If they were there
@@ -52824,7 +52824,7 @@ var fontPath = browser.extension.getURL('fonts/ClearSansLight.ttf');
 
 			rSet._isOpen = true;
 			coreDisplay.update();
-			
+
 			return rSet;
 		};
 
@@ -52832,10 +52832,10 @@ var fontPath = browser.extension.getURL('fonts/ClearSansLight.ttf');
 		// Allowed to be called externally
 			$(coreDisplay.nodes.below).addClass('__rdly-hidden');
 			$(opener).removeClass( '__rdly-active-ui' );  // different style
-			
+
 			rSet._isOpen = false;
 			coreDisplay.update();
-			
+
 			return rSet;
 		};
 
@@ -52857,7 +52857,7 @@ var fontPath = browser.extension.getURL('fonts/ClearSansLight.ttf');
 
 		rSet._addBase = function ( coreDisplay ) {
 			var browser = chrome || browser,
-	     		setPath = browser.extension.getURL('images/settings.png');
+	     		setPath = browser.extension.getURL('distribution/images/settings.png');
 	    		var $open = $('<button id="__rdly_open_settings" class="__rdly-big-menu-button">\
                                        <img class="__rdly-big-menu-button-image" src="' + setPath + '"></img>\
                                        </button>'),
@@ -52881,7 +52881,7 @@ var fontPath = browser.extension.getURL('fonts/ClearSansLight.ttf');
 			var $css 		= $(settingsCSSstr);
 			$css.appendTo( head );
 
-			return rSet;	
+			return rSet;
 		};
 
 

@@ -65,12 +65,12 @@
 // </div>';
 
 		var browser = chrome || browser,
-        rewPath = browser.extension.getURL('images/rewind.png');
+        rewPath = browser.extension.getURL('distribution/images/rewind.png');
         var rewindSentenceStr = '<button id="__rdly_rewind-sentence" class="__rdly-big-menu-button">\
     	<img src="' + rewPath + '"></img>\
     </button>';
 
-var fontPath = browser.extension.getURL('fonts/ClearSansLight.ttf');
+var fontPath = browser.extension.getURL('distribution/fonts/ClearSansLight.ttf');
 
 		// =========== RUNTIME ACTIONS =========== \\
 
