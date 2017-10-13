@@ -2,6 +2,11 @@
 
 as requested by freenode@vitx
 
+## Current tasks
+
+- Code refactoring is being done in `source/`
+- Chrome will not export `.crx` file for deployment.
+- Firefox is doing whatever Firefox is doing and that needs to be fixed.
 
 ## Development
 
