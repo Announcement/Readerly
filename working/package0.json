@@ -1,0 +1,41 @@
+{
+  "name": "read",
+  "version": "0.1.0",
+  "description": "Read with less effort.",
+  "main": "bundle.js",
+  "dependencies": {
+    "@knod/nouislider": "file:node_modules/@knod/nouislider",
+    "@knod/sbd": "file:node_modules/@knod/sbd",
+    "@knod/unfluff": "file:node_modules/@knod/unfluff",
+    "franc": "^2.0.0",
+    "jquery": "^3.1.1"
+  },
+  "devDependencies": {
+    "jasmine": "^2.5.3",
+    "watch": "^1.0.2"
+  },
+  "scripts": {
+    "test": "test",
+    "build": "browserify main.js -o bundle.js",
+    "watch": "watch 'npm run build' ./lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://secret.com"
+  },
+  "keywords": [
+    "rsvp",
+    "read",
+    "reader",
+    "parse",
+    "accessibility",
+    "assistive",
+    "speed"
+  ],
+  "author": "secret",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://secret.com"
+  },
+  "homepage": "https://secret.com"
+}

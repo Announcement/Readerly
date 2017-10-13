@@ -1,0 +1,64 @@
+{
+  "name": "read",
+  "version": "0.1.0",
+  "description": "Read with less effort.",
+  "main": "bundle.js",
+  "dependencies": {
+    "@knod/nouislider": "^9.2.1",
+    "@knod/sbd": "^2.0.2",
+    "@knod/unfluff": "^1.3.2",
+    "franc": "^3.1.1",
+    "jquery": "^3.2.1"
+  },
+  "devDependencies": {
+    "browserify": "^14.4.0",
+    "eslint-config-prettier": "^2.6.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.2.0",
+    "eslint-plugin-prettier": "^2.3.1",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "eslint": "^4.8.0",
+    "prettier": "^1.7.4",
+    "rollup-plugin-commonjs": "^8.2.1",
+    "rollup-plugin-json": "^2.3.0",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup": "^0.50.0",
+    "source-map-loader": "^0.2.2",
+    "uglify-es": "^3.1.3",
+    "webpack": "^3.7.1"
+  },
+  "scripts": {
+    "test": "test",
+    "rollup": "rollup -c",
+    "webpack": "webpack",
+    "uglify": "uglifyjs --compress --mangle --source-map --output bundle.js -- main.stage2.js",
+    "beautify": "uglifyjs -b -o main.stage1.pretty.js main.stage1.js && uglifyjs -b -o main.stage2.pretty.js main.stage2.js",
+    "prettier": "prettier lib/**/*.js --no-semi --single-quote --write && prettier main.*.pretty.js --no-semi --single-quote --write ",
+    "pretty": "npm run-script beautify && npm run-script prettier",
+    "build": "npm run-script rollup && npm run-script webpack",
+    "build-min": "npm run-script rollup && npm run-script webpack && npm run-script uglify",
+    "browserify": "browserify main.js -o bundle.js",
+    "watch": "watch 'npm run build' ./lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://secret.com"
+  },
+  "keywords": [
+    "rsvp",
+    "read",
+    "reader",
+    "parse",
+    "accessibility",
+    "assistive",
+    "speed"
+  ],
+  "author": "secret",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://secret.com"
+  },
+  "homepage": "https://secret.com"
+}
