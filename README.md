@@ -8,6 +8,14 @@ as requested by freenode@vitx
 - Chrome will not export `.crx` file for deployment.
 - Firefox is doing whatever Firefox is doing and that needs to be fixed.
 
+## Completed tasks
+
+- Most files in source are already perfected except a few.
+  - `source/main.js` has a lot of old code in it due to complexity.
+- Rollup and Webpack work on the new code and most code has been moved to es6 modules.
+- API's have been updated in `source/`
+- `source/` loads in firefox.
+
 ## Development
 
 ### Prepare the code.
