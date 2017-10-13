@@ -1,25 +1,25 @@
 // playback-CSS.js
 // css that's bundleable
 
-(function (root, playbackCSSFactory) {  // root is usually `window`
-    if (typeof define === 'function' && define.amd) {
-        // AMD. Register as an anonymous module.
-        define( [], function () {
-        	return ( root.playbackCSS = playbackCSSFactory() );
-        });
-    } else if (typeof module === 'object' && module.exports) {
-        // Node. Does not work with strict CommonJS, but only CommonJS-like
-        // environments that support module.exports, like Node.
-        module.exports = playbackCSSFactory();
-    } else {
-        // Browser globals
-        root.playbackCSS = playbackCSSFactory();
-    }
-}(this, function () {
+// ;(function(root, playbackCSSFactory) {
+//   // root is usually `window`
+//   if (typeof define === 'function' && define.amd) {
+//     // AMD. Register as an anonymous module.
+//     define([], function() {
+//       return (root.playbackCSS = playbackCSSFactory())
+//     })
+//   } else if (typeof module === 'object' && module.exports) {
+//     // Node. Does not work with strict CommonJS, but only CommonJS-like
+//     // environments that support module.exports, like Node.
+//     module.exports = playbackCSSFactory()
+//   } else {
+//     // Browser globals
+//     root.playbackCSS = playbackCSSFactory()
+//   }
+// })(this, function() {
+//   'use strict'
 
-	"use strict";
-
-	var playbackCSS = "/* readerly-playback.css */\
+export default "/* readerly-playback.css */\
 \
 /* ============================== */\
 /* STRUCTURE */\
@@ -194,8 +194,4 @@
 .__rdly-selected {\
 	background-color: salmon !important;\
 }\
-";
-
-	// To put on the window object, or export into a module
-    return playbackCSS;
-}));
+"

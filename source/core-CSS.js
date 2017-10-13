@@ -5,25 +5,26 @@
 * https://jsfiddle.net/fpd4fb80/31/
 */
 
-(function (root, coreCSSFactory) {  // root is usually `window`
-    if (typeof define === 'function' && define.amd) {
-        // AMD. Register as an anonymous module.
-        define( [], function () {
-        	return ( root.coreCSS = coreCSSFactory() );
-        });
-    } else if (typeof module === 'object' && module.exports) {
-        // Node. Does not work with strict CommonJS, but only CommonJS-like
-        // environments that support module.exports, like Node.
-        module.exports = coreCSSFactory();
-    } else {
-        // Browser globals
-        root.coreCSS = coreCSSFactory();
-    }
-}(this, function () {
+// ;(function(root, coreCSSFactory) {
+//   // root is usually `window`
+//   if (typeof define === 'function' && define.amd) {
+//     // AMD. Register as an anonymous module.
+//     define([], function() {
+//       return (root.coreCSS = coreCSSFactory())
+//     })
+//   } else if (typeof module === 'object' && module.exports) {
+//     // Node. Does not work with strict CommonJS, but only CommonJS-like
+//     // environments that support module.exports, like Node.
+//     module.exports = coreCSSFactory()
+//   } else {
+//     // Browser globals
+//     root.coreCSS = coreCSSFactory()
+//   }
+// })(this, function() {
+//   'use strict'
 
-	"use strict";
-
-	var coreCSS = "\
+var coreCSS =
+  '\
   /*readerly-main.css\
 * \
 * Refer to main display script (currently ReaderlyDisplay.js\
@@ -78,7 +79,7 @@ html, body {\
   position: relative;\
 }\
 \
-/* Should be 'top' and 'bottom' instead? */\
+/* Should be \'top\' and \'bottom\' instead? */\
 #__rdly #__rdly_above_bar {\
   top: 0;\
   /* function */\
@@ -323,8 +324,8 @@ label {\
 .__rdly-big-menu-button-image {\
   height: 27.75;\
 }\
-";
-
-    // To put on the window object, or export into a module
-    return coreCSS;
-}));
+'
+export default coreCSS
+// To put on the window object, or export into a module
+//   return coreCSS
+// })
