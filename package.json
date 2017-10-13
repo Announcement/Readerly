@@ -37,7 +37,7 @@
     "beautify": "uglifyjs -b -o main.stage1.pretty.js main.stage1.js && uglifyjs -b -o main.stage2.pretty.js main.stage2.js",
     "prettier": "prettier lib/**/*.js --no-semi --single-quote --write && prettier main.*.pretty.js --no-semi --single-quote --write ",
     "pretty": "npm run-script beautify && npm run-script prettier",
-    "build": "npm run-script rollup && npm run-script webpack",
+    "build": "npm run-script browserify",
     "build-min": "npm run-script rollup && npm run-script webpack && npm run-script uglify",
     "browserify": "browserify main.js -o bundle.js",
     "watch": "watch 'npm run build' ./lib"
