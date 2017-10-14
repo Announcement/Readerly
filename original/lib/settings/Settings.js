@@ -203,11 +203,13 @@ var Settings = function(storage, oldSettings) {
     }
 
     if (!oldSettings) {
-      oldSettings = rSet.defaults
+      oldSettings = rSet.defaults || {}
       storage.set(rSet.defaults, function(val) {
         console.log('Settings saved for first time:', val)
       })
     }
+
+    console.debug('oldSettings', oldSettings)
 
     for (let key in _settings) {
       let val = oldSettings[key] || _settings[key]

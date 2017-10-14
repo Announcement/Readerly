@@ -4,7 +4,7 @@ import json from 'rollup-plugin-json'
 // import amd from 'rollup-plugin-amd';
 import cleanup from 'rollup-plugin-cleanup'
 import prettier from 'rollup-plugin-prettier'
-
+import butternut from 'rollup-plugin-butternut'
 
 export default {
   input: 'original/main.js',
@@ -27,6 +27,7 @@ export default {
     // nodeResolve(),
     json(),
     cleanup(),
+    butternut(),
     prettier({
       // sourceMap: true,
       singleQuote: true,

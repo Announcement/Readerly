@@ -20,7 +20,7 @@
     var Parser
     var ParserSetup
     var Settings
-    var Storage
+    var ReaderlyStorage
     var WordNav
     var WordSplitter
     var Delayer
@@ -34,7 +34,7 @@
     var parser
     var fragmentor
     var wordNav
-    var storage
+    var readerlyStorage
     var delayer
     var timer
     var coreDisplay
@@ -61,14 +61,14 @@
     // }
 
     // try {
-    ParserSetup = require('./lib/ParserSetup.js')
+    ParserSetup = require('./lib/ParserSetup.2.js')
     // } catch (e) {
     //   console.debug('ParserSetup Error!', e)
     // }
 
     // try {
     Settings = require('./lib/settings/Settings.js')
-    Storage = require('./lib/ReaderlyStorage.js')
+    ReaderlyStorage = require('./lib/ReaderlyStorage.js')
     WordNav = require('./lib/parse/WordNav.js')
     WordSplitter = require('./lib/parse/WordSplitter.js')
     Delayer = require('./lib/playback/StringTime.js')
@@ -128,20 +128,37 @@
     } // End addEvents()
 
     function afterLoadSettings(oldSettings) {
-      setts = new Settings(storage, oldSettings)
-      delayer = new Delayer(setts._settings)
-      timer = new Timer(delayer)
-      coreDisplay = new Display(timer, undefined, setts)
+      try {
+        setts = new Settings(readerlyStorage, oldSettings)
+        delayer = new Delayer(setts._settings)
+        timer = new Timer(delayer)
 
-      textElem = coreDisplay.nodes.textElements
-      fragmentor = new WordSplitter(textElem, setts)
+        coreDisplay = new Display(timer, undefined, setts)
 
-      playback = new PlaybackUI(timer, coreDisplay)
-      settingsUI = new SettingsUI(coreDisplay)
-      speedSetsUI = new SpeedSetsUI(setts, settingsUI)
-      wordSetsUI = new WordSetsUI(setts, settingsUI)
+        textElem = coreDisplay.nodes.textElements
+        fragmentor = new WordSplitter(textElem, setts)
 
-      addEvents()
+        playback = new PlaybackUI(timer, coreDisplay)
+        settingsUI = new SettingsUI(coreDisplay)
+        speedSetsUI = new SpeedSetsUI(setts, settingsUI)
+        wordSetsUI = new WordSetsUI(setts, settingsUI)
+
+        addEvents()
+      } catch (e) {
+        console.debug('afterLoadSettings, Display probably failed :(', e)
+      } finally {
+        console.debug('afterLoadSettings is finished.', {
+          setts,
+          delayer,
+          timer,
+          coreDisplay,
+          fragmentor,
+          playback,
+          settingsUI,
+          speedSetsUI,
+          wordSetsUI
+        })
+      }
     } // End afterLoadSettings()
 
     function getParser() {
@@ -172,14 +189,14 @@
       parser.debug = false
 
       wordNav = new WordNav()
-      storage = new Storage()
+      readerlyStorage = new ReaderlyStorage()
 
       // !!!FOR DEBUGGING ONLY!!!
       if (false) {
-        storage.clear()
-        console.log('cleared storage')
+        readerlyStorage.clear()
+        console.log('cleared readerlyStorage')
       }
-      storage.loadAll(afterLoadSettings)
+      readerlyStorage.loadAll(afterLoadSettings)
     } // End init()
 
     // ============== START IT UP ============== \\
@@ -607,177 +624,186 @@
         var clone1 = clone.innerHTML
         //console.log(clone1);
         var wrapper = document.createElement('div')
-        var storage = clone1.replace(
+        var readerlyStorage = clone1.replace(
           /<div class=["]hiddenStructure.+[\s]*.+[\s]*.+<\/div>/g,
           ''
         )
-        var storage = storage.replace(
+        var readerlyStorage = readerlyStorage.replace(
           /<div class=["]col action tooltip hide["][^>]*>[\s]*.+[\s]*.+<\/div>/g,
           ''
         )
-        var storage = storage.replace(
+        var readerlyStorage = readerlyStorage.replace(
           /<div class=["]exp action tooltip["][^>]*>[\s]*.+[\s]*.+<\/div>/g,
           ''
         )
-        var storage = storage.replace(
+        var readerlyStorage = readerlyStorage.replace(
           /<div class=["]breadcrumbs clear["][^>]*><ul>[\s]+<li>.+[\s]*<li>.+[\s]*<li>.+[\s]*<li>.+[\s]*<\/ul><\/div>/g,
           ''
         )
-        var storage = storage.replace(/<div[^>]*>|<\/div>/g, '')
-        var storage = storage.replace(/<span[^>]*>|<\/span>/g, '')
-        var storage = storage.replace(/<beelinespan[^>]*>|<\/beelinespan>/g, '')
-        var storage = storage.replace(/<img[^>]*>.+<\/img>/g, '')
-        var storage = storage.replace(/<img[^>]*>/g, '')
-        var storage = storage.replace(/<\/img>/g, '')
+        var readerlyStorage = readerlyStorage.replace(/<div[^>]*>|<\/div>/g, '')
+        var readerlyStorage = readerlyStorage.replace(
+          /<span[^>]*>|<\/span>/g,
+          ''
+        )
+        var readerlyStorage = readerlyStorage.replace(
+          /<beelinespan[^>]*>|<\/beelinespan>/g,
+          ''
+        )
+        var readerlyStorage = readerlyStorage.replace(
+          /<img[^>]*>.+<\/img>/g,
+          ''
+        )
+        var readerlyStorage = readerlyStorage.replace(/<img[^>]*>/g, '')
+        var readerlyStorage = readerlyStorage.replace(/<\/img>/g, '')
 
         var regexp = /<\/p>/g
-        var storage = storage.replace(regexp, function(match) {
+        var readerlyStorage = readerlyStorage.replace(regexp, function(match) {
           return match.replace(/<\/p>/g, ' </p>')
         })
 
         var regexp = /[\s]+([a-zA-Z]|[ά-ωΑ-ώ]){1,20}[\s]+[!]/g
-        var storage = storage.replace(regexp, function(match) {
+        var readerlyStorage = readerlyStorage.replace(regexp, function(match) {
           return match.replace(/[\s]+[!]/g, '!')
         })
 
         var regexp = /(if)[\s]+[(]/g
-        var storage = storage.replace(regexp, function(match) {
+        var readerlyStorage = readerlyStorage.replace(regexp, function(match) {
           return match.replace(/[\s]/g, '')
         })
 
-        var storage = storage.replace(/<!--[\s\S]*?-->/gm, '')
+        var readerlyStorage = readerlyStorage.replace(/<!--[\s\S]*?-->/gm, '')
 
         var regexp = /^[\s]+[{][\s]+/g
-        var storage = storage.replace(regexp, function(match) {
+        var readerlyStorage = readerlyStorage.replace(regexp, function(match) {
           return match.replace(/[\s]+[{]/g, '}')
         })
 
         var regexp = /[\s]+[}][\s]+/g
-        var storage = storage.replace(regexp, function(match) {
+        var readerlyStorage = readerlyStorage.replace(regexp, function(match) {
           return match.replace(/[\s]+[}]/g, '}')
         })
 
         var regexp = /[}][\s]+/g
-        var storage = storage.replace(regexp, function(match) {
+        var readerlyStorage = readerlyStorage.replace(regexp, function(match) {
           return match.replace(/[}][\s]+/g, '')
         })
 
         var regexp = /[\s]+[(][\s]+/g
-        var storage = storage.replace(regexp, function(match) {
+        var readerlyStorage = readerlyStorage.replace(regexp, function(match) {
           return match.replace(/[(][\s]+/g, '(')
         })
 
         var regexp = /(&nbsp;)+[)][,][\s]+/g
-        var storage = storage.replace(regexp, function(match) {
+        var readerlyStorage = readerlyStorage.replace(regexp, function(match) {
           return match.replace(/(&nbsp;)+[)][,]/g, '),')
         })
 
         var regexp = /(&nbsp;)+[)][,][\s]+/g
-        var storage = storage.replace(regexp, function(match) {
+        var readerlyStorage = readerlyStorage.replace(regexp, function(match) {
           return match.replace(/(&nbsp;)+[)][,]/g, '),')
         })
 
         var regexp = /<\/code>[\s]*[0-9]+[\s]*<\/pre>/g
-        var storage = storage.replace(regexp, function(match) {
+        var readerlyStorage = readerlyStorage.replace(regexp, function(match) {
           return match.replace(/[\s]*[0-9]+[\s]*/g, '')
         })
 
         var regexp = /[}][\s]{2,}([a-zA-Z]|[ά-ωΑ-ώ])/g
-        var storage = storage.replace(regexp, function(match) {
+        var readerlyStorage = readerlyStorage.replace(regexp, function(match) {
           return match.replace(/[\s]{2,}/g, ' ')
         })
 
         for (count = 0; count < 10; count++) {
           var splitregex = /(.{15,33})([\s]|[;]|[{]|[)])/gm
-          var storage = storage.replace(splitregex, '$1\n')
+          var readerlyStorage = readerlyStorage.replace(splitregex, '$1\n')
         }
 
-        //console.log(storage);
+        //console.log(readerlyStorage);
 
         var regexp = /<p[^>]*>[^"]*["][^"]+[.][\s]*(<\/p>)/g
-        var storage = storage.replace(regexp, function(match) {
+        var readerlyStorage = readerlyStorage.replace(regexp, function(match) {
           return match.replace(/[.][\s]*<\/p>/g, '."</p>')
         })
 
         var regexp = /<p[^>]*>[^"]*["][^"]+[?][\s]*(<\/p>)/g
-        var storage = storage.replace(regexp, function(match) {
+        var readerlyStorage = readerlyStorage.replace(regexp, function(match) {
           return match.replace(/[?][\s]*<\/p>/g, '?"</p>')
         })
 
         var regexp = /<p[^>]*>[“][^“]+[.][\s]*["](<\/p>)/g
-        var storage = storage.replace(regexp, function(match) {
+        var readerlyStorage = readerlyStorage.replace(regexp, function(match) {
           return match.replace(/[.][\s]*["](<\/p>)/g, '.</p>')
         })
 
-        var storage = storage.replace(/[\s]+["]["][\s]+/g, ' "')
+        var readerlyStorage = readerlyStorage.replace(/[\s]+["]["][\s]+/g, ' "')
 
         var regexp = /[^.](<\/li>)/g
-        var storage = storage.replace(regexp, function(match) {
+        var readerlyStorage = readerlyStorage.replace(regexp, function(match) {
           return match.replace(/(<\/li>)/g, '.</li>')
         })
 
         var regexp = /[\s]+[.](<\/li>)/g
-        var storage = storage.replace(regexp, function(match) {
+        var readerlyStorage = readerlyStorage.replace(regexp, function(match) {
           return match.replace(/[\s]+/g, '')
         })
 
         var regexp = /[.][\s]*[.][\s]*(<\/li>)/g
-        var storage = storage.replace(regexp, function(match) {
+        var readerlyStorage = readerlyStorage.replace(regexp, function(match) {
           return match.replace(/[.][\s]*[.]/g, '.')
         })
 
-        //console.log(storage);
+        //console.log(readerlyStorage);
 
-        if (!storage.match(/<pre[^>]*>/g)) {
-          var storage = storage.replace(/<\/pre>/g, '')
+        if (!readerlyStorage.match(/<pre[^>]*>/g)) {
+          var readerlyStorage = readerlyStorage.replace(/<\/pre>/g, '')
         }
 
-        //console.log(storage);
+        //console.log(readerlyStorage);
 
-        wrapper.innerHTML = storage
+        wrapper.innerHTML = readerlyStorage
 
-        storage = wrapper.innerHTML
+        readerlyStorage = wrapper.innerHTML
 
         var regexp = /[\u2014-\u2015\u2E3A\u2E3B]/g
-        var storage = storage.replace(regexp, function(match) {
+        var readerlyStorage = readerlyStorage.replace(regexp, function(match) {
           return match.replace(/[-\u2014-\u2015\u2E3A\u2E3B]/g, ' ')
         })
 
         // remove regular dashes surrounded by space
         var regexp = /[\s]+[-\u2010-\u2011\uFE58\uFE63\uFF0D][\s]+/g
-        var storage = storage.replace(regexp, function(match) {
+        var readerlyStorage = readerlyStorage.replace(regexp, function(match) {
           return match.replace(/[-\u2010-\u2011\uFE58\uFE63\uFF0D]/g, ' ')
         })
 
-        var storage = storage.replace(
+        var readerlyStorage = readerlyStorage.replace(
           /(?:[a-zA-Z]|[ά-ωΑ-ώ])[\s]+[.](?:^[a-zA-Z]|[ά-ωΑ-ώ])/g,
           '.'
         )
 
         var regexp = /…/g
-        var storage = storage.replace(regexp, function(match) {
+        var readerlyStorage = readerlyStorage.replace(regexp, function(match) {
           return match + ' '
         })
 
         var regexp = /[\s]+[.][\s]+/g
-        var storage = storage.replace(regexp, function(match) {
+        var readerlyStorage = readerlyStorage.replace(regexp, function(match) {
           return match.replace(/[\s]+[.]/g, '.')
         })
 
-        var storage = storage.replace(/<a[^>]*>|<\/a>/g, '')
-        var storage = storage.replace(/<b[^>]*>|<\/b>/g, '')
-        var storage = storage.replace(/<br>/g, ' ')
+        var readerlyStorage = readerlyStorage.replace(/<a[^>]*>|<\/a>/g, '')
+        var readerlyStorage = readerlyStorage.replace(/<b[^>]*>|<\/b>/g, '')
+        var readerlyStorage = readerlyStorage.replace(/<br>/g, ' ')
 
-        var storage = storage.replace(/  +/g, ' ')
+        var readerlyStorage = readerlyStorage.replace(/  +/g, ' ')
 
-        var storage = storage.replace(/[.][”]­/g, '."')
+        var readerlyStorage = readerlyStorage.replace(/[.][”]­/g, '."')
 
-        var storage = storage.replace(/[“]­/g, '"')
-        var storage = storage.replace(/[”]­/g, '"')
+        var readerlyStorage = readerlyStorage.replace(/[“]­/g, '"')
+        var readerlyStorage = readerlyStorage.replace(/[”]­/g, '"')
 
-        console.log(storage)
+        console.debug(readerlyStorage)
 
-        wrapper.innerHTML = storage
+        wrapper.innerHTML = readerlyStorage
 
         //console.log(wrapper);
 

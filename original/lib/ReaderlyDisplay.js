@@ -54,7 +54,7 @@ var ReaderlyDisplay = function(timer, parentNode, settings) {
 
   var readerly, textElems, $iframe
 
-  var iframeStr = '<iframe id="__rdly_iframe"></iframe>'
+  var iframeStr = '<iframe id="__rdly_iframe" src="about:blank"></iframe>'
 
   var cssStr = '<style>' + coreCSSstr + '\n' + nouiCSSstr + '</style>'
 
@@ -103,7 +103,6 @@ var ReaderlyDisplay = function(timer, parentNode, settings) {
   }
 
   rDis.open = function() {
-    console.debug('ReaderlyDisplay(rDis)::open')
     rDis.show()
     for (let trigi = 0; trigi < rDis._toTrigger.length; trigi++) {
       let obj = rDis._toTrigger[trigi]
@@ -270,46 +269,128 @@ var ReaderlyDisplay = function(timer, parentNode, settings) {
   }
 
   rDis._addNodes = function(parentNode) {
-    if (!parentNode) {
-      parentNode = $(document.body)[0]
+    if (typeof browser !== 'undefined') {
+      ;(() => {
+        var iframe
+        var style
+
+        var $document
+        var $window
+
+        var readerlyId
+        // var readerly
+
+        readerlyId = '__rdly'
+
+        parentNode = parentNode || document.body
+
+        try {
+          iframe = document.createElement('iframe')
+          style = document.createElement('style')
+
+          iframe.id = '__rdly_iframe'
+          iframe.src = chrome.extension.getURL('page.html')
+
+          document.body.appendChild(iframe)
+
+          $document = iframe.contentDocument
+          $window = iframe.contentWindow
+
+          $document.body.style['overflow-x'] = 'hidden'
+          $document.body.style['overflow-y'] = 'hidden'
+
+          $document.body.innerHTML = htmlStr
+
+          style.innerHTML = [coreCSSstr, nouiCSSstr].join('\n')
+
+          $document.head.appendChild(style)
+
+          iframe.style['min-height'] = '81px'
+          readerly = $document.querySelector('#' + readerlyId)
+
+          rDis._readerlyNode = readerly
+
+          rDis.nodes = {
+            doc: $document,
+            head: $document.head,
+            body: $document.body,
+            readerly: readerly,
+            above: readerly.querySelectorAll('#__rdly_above_bar')[0],
+            bar: readerly.querySelectorAll('#__rdly-bar')[0],
+            barLeft: readerly.querySelectorAll('.__rdly-bar-left')[0],
+            barCenter: readerly.querySelectorAll('.__rdly-bar-center')[0],
+            aboveText: readerly.querySelectorAll(
+              '#__rdly_above_text_elements'
+            )[0],
+            leftOfText: readerly.querySelectorAll(
+              '#__rdly_left_text_elements'
+            )[0],
+            textElements: readerly.querySelectorAll('#__rdly_text_elements')[0],
+            rightOfText: readerly.querySelectorAll(
+              '#__rdly_right_text_elements'
+            )[0],
+            belowText: readerly.querySelectorAll(
+              '#__rdly_below_text_elements'
+            )[0],
+            barRight: readerly.querySelectorAll('.__rdly-bar-right')[0],
+            close: readerly.querySelectorAll('#__rdly_close')[0],
+            halfSpeed: readerly.querySelectorAll('#__rdly_halvespeed_input')[0],
+            below: readerly.querySelectorAll('#__rdly_below_bar')[0]
+          }
+
+          console.debug($document)
+          console.debug($window)
+        } catch (e) {
+          console.debug('_addNodes', e)
+        }
+        $iframe = $(iframe)
+      })()
     }
 
-    $iframe = $(iframeStr)
-    $iframe.appendTo(parentNode)
+    if (typeof browser === 'undefined') {
+      if (!parentNode) {
+        parentNode = $(document.body)[0]
+      }
 
-    var doc = $iframe[0].contentDocument
-    doc.body.style['overflow-x'] = 'hidden'
-    doc.body.style['overflow-y'] = 'hidden'
+      $iframe = $(iframeStr)
+      $iframe.appendTo(parentNode)
 
-    readerly = rDis._readerlyNode = $(htmlStr)[0]
-    $(readerly).appendTo(doc.body)
+      var doc = $iframe[0].contentDocument
 
-    // STYLES
-    var $styles = $(cssStr)
-    $styles.appendTo(doc.head)
-    $iframe[0].style.minHeight = '81px'
-    // ??: Is this useful?
+      doc.body.style['overflow-x'] = 'hidden'
+      doc.body.style['overflow-y'] = 'hidden'
 
-    rDis.nodes = {
-      doc: doc,
-      head: doc.head,
-      body: doc.body,
-      readerly: readerly,
-      above: $(readerly).find('#__rdly_above_bar')[0],
-      bar: $(readerly).find('#__rdly-bar')[0],
-      barLeft: $(readerly).find('.__rdly-bar-left')[0],
-      barCenter: $(readerly).find('.__rdly-bar-center')[0],
-      aboveText: $(readerly).find('#__rdly_above_text_elements')[0],
-      leftOfText: $(readerly).find('#__rdly_left_text_elements')[0],
-      textElements: $(readerly).find('#__rdly_text_elements')[0],
-      rightOfText: $(readerly).find('#__rdly_right_text_elements')[0],
-      belowText: $(readerly).find('#__rdly_below_text_elements')[0],
-      barRight: $(readerly).find('.__rdly-bar-right')[0],
-      close: $(readerly).find('#__rdly_close')[0],
-      halfSpeed: $(readerly).find('#__rdly_halvespeed_input')[0],
-      below: $(readerly).find('#__rdly_below_bar')[0]
+      readerly = rDis._readerlyNode = $(htmlStr)[0]
+      $(readerly).appendTo(doc.body)
+
+      // STYLES
+      var $styles = $(cssStr)
+      $styles.appendTo(doc.head)
+      $iframe[0].style.minHeight = '81px'
+      // ??: Is this useful?
+
+      rDis.nodes = {
+        doc: doc,
+        head: doc.head,
+        body: doc.body,
+        readerly: readerly,
+        above: $(readerly).find('#__rdly_above_bar')[0],
+        bar: $(readerly).find('#__rdly-bar')[0],
+        barLeft: $(readerly).find('.__rdly-bar-left')[0],
+        barCenter: $(readerly).find('.__rdly-bar-center')[0],
+        aboveText: $(readerly).find('#__rdly_above_text_elements')[0],
+        leftOfText: $(readerly).find('#__rdly_left_text_elements')[0],
+        textElements: $(readerly).find('#__rdly_text_elements')[0],
+        rightOfText: $(readerly).find('#__rdly_right_text_elements')[0],
+        belowText: $(readerly).find('#__rdly_below_text_elements')[0],
+        barRight: $(readerly).find('.__rdly-bar-right')[0],
+        close: $(readerly).find('#__rdly_close')[0],
+        halfSpeed: $(readerly).find('#__rdly_halvespeed_input')[0],
+        below: $(readerly).find('#__rdly_below_bar')[0]
+      }
     }
     return rDis
+    // return rDis
   } // End rDis._addNodes()
 
   rDis._init = function(parentNode) {

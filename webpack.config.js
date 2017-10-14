@@ -1,5 +1,5 @@
 module.exports = {
-  entry: ['babel-polyfill', './rolled.js'],
+  entry: ['babel-polyfill', './original/main.js'],
   devtool: "source-map",
   output: {
     filename: "distribution/bundle.js"
@@ -26,5 +26,9 @@ module.exports = {
     alias: {
       jquery: "jquery/src/jquery"
     }
-  }
+  },
+  // watch: true,
+  // watchOptions: {
+  //   ignored: /node_modules/
+  // }
 };

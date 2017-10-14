@@ -13,7 +13,7 @@ function $sendMessage(id, message) {
   packet = {}
   time = Date.now()
 
-  Object.assign(packet, message, {time, id})
+  Object.assign(packet, message, { time, id })
 
   // console.debug($browser.extension.getURL())
   console.debug('$sendMessage', id, packet)

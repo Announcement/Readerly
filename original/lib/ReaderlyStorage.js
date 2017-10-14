@@ -34,15 +34,34 @@ var ReaderlyStorage = function() {
   rSto.set = function(settings, callback) {
     // Set any number of settings values
     // Docs say no args returned
-    chrome.storage.local.set(settings, callback)
+
+    console.debug('ReaderlyStorage', settings)
+
+    if (settings !== null && settings !== undefined) {
+      chrome.storage.local.set(settings, callback)
+    }
   } // End rSto.set()
 
   rSto.save = rSto.set
 
   rSto.loadAll = function(callback) {
-    chrome.storage.local.get(null, function loadOldReaderlySettings(settings) {
-      callback(settings)
-    })
+    if (typeof browser === 'undefined') {
+      chrome.storage.local.get(callback)
+      // .then(callback)
+      // .catch(it => {
+      //   console.debug('loadAll,chrome.storage.local.get failed', it)
+      // })
+    } else {
+      browser.storage.local.get(null)
+      .then(callback)
+      .catch(it => {
+        console.debug('loadAll,browser.storage.local.get failed', it)
+        callback()
+      })
+    }
+    //   null, function loadOldReaderlySettings(settings) {
+    //   callback(settings)
+    // })
   } // End rSto.loadAll()
 
   rSto.get = function(keyOrKeys, callback) {
@@ -56,6 +75,7 @@ var ReaderlyStorage = function() {
   rSto.cleanSave = function(settings, callback) {
     chrome.storage.local.clear(function clearReaderlySettings() {
       // Docs say no args returned
+      console.debug('cleanSave', settings)
       chrome.storage.local.set(settings, callback)
     })
   } // End rSto.cleanSave()
