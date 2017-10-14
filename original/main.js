@@ -598,6 +598,8 @@
     }
 
     function selectionClicked(event) {
+      var count
+      
       event.preventDefault()
       event.stopPropagation()
 

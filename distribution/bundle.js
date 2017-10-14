@@ -35495,6 +35495,8 @@ module.exports = function (regExp, replace) {
     };
 
     var selectionClicked = function selectionClicked(event) {
+      var count;
+
       event.preventDefault();
       event.stopPropagation();
 
