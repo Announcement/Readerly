@@ -3,12 +3,14 @@
 * Sets up options/functions for parser
 */
 
-let $ = require('jquery')
+console.debug('ParserSetup is being loaded.')
 
-let franc = require('franc')
-let langCodes = require('./lib/parse/iso-639.json')
-let unfluff = require('@knod/unfluff')
-let sbd = require('@knod/sbd')
+var $ = require('jquery')
+
+var franc = require('franc')
+var langCodes = require('./parse/iso-639.json')
+var unfluff = require('@knod/unfluff')
+var sbd = require('@knod/sbd')
 
 // import * as $ from 'jquery'
 // import * as franc from 'franc'
@@ -24,6 +26,9 @@ var ParserSetup = function () {
     * Builds the options needed for the parser
     */
   var rSup = {}
+
+  console.debug('Started')
+
 
   rSup.debug = false
 
@@ -1238,6 +1243,7 @@ var ParserSetup = function () {
 
     return sentences
   }
+  console.debug('Completed.')
 
   return rSup
 } // End ParserSetup() -> {}

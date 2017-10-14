@@ -17,8 +17,8 @@
  */
 
 let $ = require('jquery')
-let coreCSSstr = require('./lib/core-CSS')
-let nouiCSSstr = require('./lib/settings/noui-CSS')
+let coreCSSstr = require('./core-CSS')
+let nouiCSSstr = require('./settings/noui-CSS')
 //
 // (function(root, displayFactory) {  // root is usually `window`
 //     if(typeof define === 'function' && define.amd) {

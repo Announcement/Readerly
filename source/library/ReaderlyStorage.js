@@ -25,6 +25,8 @@
 // })(this, function() {
 //   'use strict'
 
+console.debug('ReaderlyStorage is being loaded.')
+
 var ReaderlyStorage = function () {
   /* ( None ) -> ReaderlyStorage
 	*

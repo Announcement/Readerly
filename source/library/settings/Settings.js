@@ -18,6 +18,8 @@
 // })(this, function() {
 //   'use strict'
 
+console.debug('Settings is being loaded.')
+
 var Settings = function(storage, oldSettings) {
   var rSet = {}
 

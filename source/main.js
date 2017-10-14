@@ -1,19 +1,21 @@
-import Parser from './lib/parse/Parser'
-import ParserSetup from './lib/ParserSetup'
+import Parser from './library/parse/Parser'
+import ParserSetup from './library/ParserSetup'
 
-import Settings from './lib/settings/Settings'
-import Storage from './lib/ReaderlyStorage'
-import WordNav from './lib/parse/WordNav'
-import WordSplitter from './lib/parse/WordSplitter'
-import Delayer from './lib/playback/StringTime'
-import Timer from './lib/playback/ReaderlyTimer'
-import Display from './lib/ReaderlyDisplay'
-import PlaybackUI from './lib/playback/PlaybackUI.js'
-import SettingsUI from './lib/settings/ReaderlySettings.js'
-import SpeedSetsUI from './lib/settings/SpeedSettings.js'
-import WordSetsUI from './lib/settings/WordSettings.js'
+import Settings from './library/settings/Settings'
+import Storage from './library/ReaderlyStorage'
+import WordNav from './library/parse/WordNav'
+import WordSplitter from './library/parse/WordSplitter'
+import Delayer from './library/playback/StringTime'
+import Timer from './library/playback/ReaderlyTimer'
+import Display from './library/ReaderlyDisplay'
+import PlaybackUI from './library/playback/PlaybackUI.js'
+import SettingsUI from './library/settings/ReaderlySettings.js'
+import SpeedSetsUI from './library/settings/SpeedSettings.js'
+import WordSetsUI from './library/settings/WordSettings.js'
 
 const $ = require('jquery')
+
+console.debug('Everything has been loaded.')
 
 //
 // const Parser = require('./lib/parse/Parser.js')
@@ -52,7 +54,12 @@ selected = []
 
 // document.body.style.border = '10px solid red'
 
+console.debug('init')
+
 init()
+
+console.debug('listen onMessage')
+
 $browser.extension.onMessage.addListener(onMessage)
 
 /**
@@ -880,6 +887,8 @@ function cleanupSelection () {
 }
 
 function onMessage (message, sender, sendResponse) {
+  console.debug(message, sender)
+
   isReadSelectedText(message.functiontoInvoke)
   isReadFullPage(message.functiontoInvoke)
   isGetSelection(message.functiontoInvoke)

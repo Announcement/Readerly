@@ -5,7 +5,9 @@
  * (list of sentences which are lists of words)
  */
 
-const $ = require('jquery')
+var $ = require('jquery')
+
+console.debug('Parser is being loaded.')
 
 // (function (root, parserFactory) {  // root is usually `window`
 //     if (typeof define === 'function' && define.amd) {  // amd if possible
@@ -146,7 +148,7 @@ var Parser = function({
       return splitSentences(refinedText)
     }
   } // End rPar.parse()
-
+  console.debug('finished')
   return rPar
 } // End Parser() -> {}
 export default Parser

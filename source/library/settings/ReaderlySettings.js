@@ -12,7 +12,7 @@
 */
 
 let $ = require('jquery')
-let settingsCSSstr = require('./lib/settings/settings-CSS')
+let settingsCSSstr = require('./settings-CSS')
 
 //
 // ;(function(root, settingsFactory) {

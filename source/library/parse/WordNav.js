@@ -40,6 +40,8 @@
 // })(this, function() {
 //   'use strict'
 
+console.debug('WordNav is being loaded.')
+
 // TODO: Do this without needing a new object each time
 var WordNav = function() {
   /* ( None ) -> WordNav

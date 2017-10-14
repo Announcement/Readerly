@@ -1,16 +1,30 @@
 module.exports = {
-  entry: './main.stage1.js',
-  devtool: 'inline-source-map',
+  entry: "./rolled.js",
+  devtool: "source-map",
   output: {
-    filename: 'bundle.js'
+    filename: "distribution/bundle.js"
   },
   module: {
     rules: [
       {
         test: /\.js$/,
-        use: ['source-map-loader'],
-        enforce: 'pre'
+        use: ["source-map-loader"],
+        enforce: "pre"
+      },
+      {
+        test: /\.js$/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["env"]
+          }
+        }
       }
     ]
+  },
+  resolve: {
+    alias: {
+      jquery: "jquery/src/jquery"
+    }
   }
-}
+};

@@ -9,7 +9,7 @@
 
 let $ = require('jquery')
 let noUiSlider = require('@knod/nouislider')
-let playbackCSSstr = require('./lib/playback/playback-CSS')
+let playbackCSSstr = require('./playback-CSS')
 
 function PlaybackUI (timer, coreDisplay) {
   var rPUI = {}

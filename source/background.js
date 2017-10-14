@@ -21,9 +21,8 @@ contexts.forEach(context => {
   id = $browser.contextMenus.create(object)
 })
 
-$browser.browserAction.onClicked.addListener(onIconClick)
+// $browser.browserAction.onClicked.addListener(onIconClick)
 $browser.commands.onCommand.addListener(onCommand)
-
 /**
  * Does some things and stuff.
  * @method onContextClick
@@ -87,7 +86,7 @@ function onReadSelectionShortcut () {
     message = {}
     message.functiontoInvoke = 'readSelectedText'
 
-    browser.tabs.sendMessage(tabId, message)
+    $browser.tabs.sendMessage(tabId, message)
   }
 }
 

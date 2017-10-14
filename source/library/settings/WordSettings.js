@@ -7,6 +7,8 @@
 let $ = require('jquery')
 let noUiSlider = require('@knod/nouislider')
 
+console.debug('WordSettings is being loaded.')
+
 // ;(function(root, wordSetsFactory) {
 //   // root is usually `window`
 //   if (typeof define === 'function' && define.amd) {

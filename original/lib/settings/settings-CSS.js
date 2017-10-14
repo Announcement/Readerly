@@ -1,26 +1,26 @@
 // settings-CSS.js
 // css that's bundleable
 
+// ;(function(root, settingsCSSFactory) {
+//   // root is usually `window`
+//   if (typeof define === 'function' && define.amd) {
+//     // AMD. Register as an anonymous module.
+//     define([], function() {
+//       return (root.settingsCSS = settingsCSSFactory())
+//     })
+//   } else if (typeof module === 'object' && module.exports) {
+//     // Node. Does not work with strict CommonJS, but only CommonJS-like
+//     // environments that support module.exports, like Node.
+//     module.exports = settingsCSSFactory()
+//   } else {
+//     // Browser globals
+//     root.settingsCSS = settingsCSSFactory()
+//   }
+// })(this, function() {
+//   'use strict'
 
-(function (root, settingsCSSFactory) {  // root is usually `window`
-    if (typeof define === 'function' && define.amd) {
-        // AMD. Register as an anonymous module.
-        define( [], function () {
-        	return ( root.settingsCSS = settingsCSSFactory() );
-        });
-    } else if (typeof module === 'object' && module.exports) {
-        // Node. Does not work with strict CommonJS, but only CommonJS-like
-        // environments that support module.exports, like Node.
-        module.exports = settingsCSSFactory();
-    } else {
-        // Browser globals
-        root.settingsCSS = settingsCSSFactory();
-    }
-}(this, function () {
-
-	"use strict";
-
-	var settingsCSS = "/* settings.css\
+var settingsCSS =
+  '/* settings.css\
 * \
 * Refer to main settings script (currently ReaderlySettings.js\
 * on 12/20/16) for DOM structure.\
@@ -202,8 +202,8 @@
   -o-border-radius: 2px;\
   border-radius: 2px;\
 }\
-";
-
-	// To put on the window object, or export into a module
-    return settingsCSS;
-}));
+'
+module.exports = settingsCSS
+// To put on the window object, or export into a module
+//   return settingsCSS
+// })

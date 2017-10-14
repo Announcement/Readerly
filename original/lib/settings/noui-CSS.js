@@ -1,26 +1,26 @@
 // noui-CSS.js
 // css that's bundleable
 
+// ;(function(root, nouiCSSFactory) {
+//   // root is usually `window`
+//   if (typeof define === 'function' && define.amd) {
+//     // AMD. Register as an anonymous module.
+//     define([], function() {
+//       return (root.nouiCSS = nouiCSSFactory())
+//     })
+//   } else if (typeof module === 'object' && module.exports) {
+//     // Node. Does not work with strict CommonJS, but only CommonJS-like
+//     // environments that support module.exports, like Node.
+//     module.exports = nouiCSSFactory()
+//   } else {
+//     // Browser globals
+//     root.nouiCSS = nouiCSSFactory()
+//   }
+// })(this, function() {
+//   'use strict'
 
-(function (root, nouiCSSFactory) {  // root is usually `window`
-    if (typeof define === 'function' && define.amd) {
-        // AMD. Register as an anonymous module.
-        define( [], function () {
-        	return ( root.nouiCSS = nouiCSSFactory() );
-        });
-    } else if (typeof module === 'object' && module.exports) {
-        // Node. Does not work with strict CommonJS, but only CommonJS-like
-        // environments that support module.exports, like Node.
-        module.exports = nouiCSSFactory();
-    } else {
-        // Browser globals
-        root.nouiCSS = nouiCSSFactory();
-    }
-}(this, function () {
-
-	"use strict";
-
-	var nouiCSS = "/* noUi.css */\
+var nouiCSS =
+  "/* noUi.css */\
 \
 .noUi-target,\
 .noUi-target * {\
@@ -222,8 +222,9 @@
   top: 50%;\
   transform: translateY(-50%);\
 }\
-";
+"
 
-	// To put on the window object, or export into a module
-    return nouiCSS;
-}));
+// To put on the window object, or export into a module
+module.exports = nouiCSS
+// return nouiCSS
+// })

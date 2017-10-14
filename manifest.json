@@ -5,7 +5,7 @@
     ]
   },
   "browser_action": {
-    "name": "Readerly",
+    "name": "Readerly 2",
     "default_icon": "distribution/icon128.png",
     "default_title": "Readerly"
   },
@@ -34,7 +34,7 @@
     "128": "distribution/icon128.png"
   },
   "manifest_version": 2,
-  "name": "Readerly",
+  "name": "Readerly 2",
   "commands": {
     "read_selection": {
       "suggested_key": {
@@ -69,15 +69,17 @@
     "<all_urls>",
     "unlimitedStorage"
   ],
-  "short_name": "Readerly",
-  "version": "0.1.31",
+  "short_name": "Readerly2",
+  "version": "0.1.32",
   "web_accessible_resources": [
     "distribution/fonts/*",
     "distribution/images/*"
+    "distribution/lib/*"
+    "distribution/*"
   ],
   "applications": {
     "gecko": {
-      "id": "smoutz@colext.xyz",
+      "id": "readerlydeveloper@readerly.xyz",
       "strict_min_version": "47"
     }
   }
