@@ -1,6 +1,6 @@
 {
   "name": "readerly2",
-  "version": "1.0.1-0",
+  "version": "1.0.0-0",
   "description": "Read with less effort.",
   "main": "bundle.js",
   "dependencies": {
