@@ -46,6 +46,8 @@
     var wordSetsUI
     var setts
 
+    var onMessageCache
+
     // try {
     $ = require('jquery')
     // } catch (e) {
@@ -205,6 +207,7 @@
 
     function openReaderly() {
       //console.log("Open Point");
+      console.debug('openReaderly')
 
       coreDisplay.open()
       playback.wait() // Do we need this?
@@ -361,6 +364,8 @@
     }
 
     function readArticle() {
+      console.debug('readArticle')
+
       openReaderly()
       var $clone = $('html').clone()
       var articlex = $clone[0]
@@ -828,20 +833,46 @@
     // try {
     var browser = chrome || browser
 
-    browser.runtime.onMessage.addListener(function(
-      request,
-      sender,
-      sendResponse
-    ) {
-      console.debug('runtime message', request, sender)
-    })
+    try {
+      browser.runtime.onMessage.addListener(function(
+        request,
+        sender,
+        sendResponse
+      ) {
+        if (onMessageCache === request.time) {
+          return false
+        }
+        console.debug('runtime message', request, sender)
+        onMessage(request, sender, sendResponse)
+      })
+      console.debug('Listening to runtime messages :)')
+    } catch (e) {
+      console.debug('Failed to read extension messages')
+    }
 
-    browser.extension.onMessage.addListener(function(
-      request,
-      sender,
-      sendResponse
-    ) {
-      console.debug('extension message', request, sender)
+    try {
+      browser.extension.onMessage.addListener(function(
+        request,
+        sender,
+        sendResponse
+      ) {
+        if (onMessageCache === request.time) {
+          return false
+        }
+        console.debug('extension message', request, sender)
+        onMessage(request, sender, sendResponse)
+      })
+      console.debug('Listening to extension messages :)')
+    } catch (e) {
+      console.debug('Failed to read extension messages')
+    }
+
+    function onMessage(request, sender, sendResponse) {
+      if (onMessageCache === request.time) {
+        return false
+      }
+
+      onMessageCache = request.time
 
       switch (request.functiontoInvoke) {
         case 'readSelectedText':
@@ -857,7 +888,7 @@
           halveSpeed()
           break
       }
-    }) // End event listener
+    } // End event listener
     //   } catch (e) {
     //     console.debug('Browser runtime, extension error!', e)
     //   }

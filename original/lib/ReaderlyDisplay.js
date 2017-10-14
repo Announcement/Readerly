@@ -103,6 +103,7 @@ var ReaderlyDisplay = function(timer, parentNode, settings) {
   }
 
   rDis.open = function() {
+    console.debug('ReaderlyDisplay(rDis)::open')
     rDis.show()
     for (let trigi = 0; trigi < rDis._toTrigger.length; trigi++) {
       let obj = rDis._toTrigger[trigi]

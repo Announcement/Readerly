@@ -5503,6 +5503,7 @@ var WordSettings_1 = WordSettings
     var speedSetsUI
     var wordSetsUI
     var setts
+    var onMessageCache
     $ = require$$0
     Parser = Parser_1
     ParserSetup = ParserSetup_1
@@ -5604,6 +5605,7 @@ var WordSettings_1 = WordSettings
       return true
     }
     function openReaderly() {
+      console.debug('openReaderly')
       coreDisplay.open()
       playback.wait()
     }
@@ -5724,6 +5726,7 @@ var WordSettings_1 = WordSettings
       return cleaned ? read(cleaned) : false
     }
     function readArticle() {
+      console.debug('readArticle')
       openReaderly()
       var $clone = $('html').clone()
       var articlex = $clone[0]
@@ -6074,19 +6077,43 @@ var WordSettings_1 = WordSettings
       lastTarget = undefined
     }
     var browser = chrome || browser
-    browser.runtime.onMessage.addListener(function(
-      request,
-      sender,
-      sendResponse
-    ) {
-      console.debug('runtime message', request, sender)
-    })
-    browser.extension.onMessage.addListener(function(
-      request,
-      sender,
-      sendResponse
-    ) {
-      console.debug('extension message', request, sender)
+    try {
+      browser.runtime.onMessage.addListener(function(
+        request,
+        sender,
+        sendResponse
+      ) {
+        if (onMessageCache === request.time) {
+          return false
+        }
+        console.debug('runtime message', request, sender)
+        onMessage(request, sender, sendResponse)
+      })
+      console.debug('Listening to runtime messages :)')
+    } catch (e) {
+      console.debug('Failed to read extension messages')
+    }
+    try {
+      browser.extension.onMessage.addListener(function(
+        request,
+        sender,
+        sendResponse
+      ) {
+        if (onMessageCache === request.time) {
+          return false
+        }
+        console.debug('extension message', request, sender)
+        onMessage(request, sender, sendResponse)
+      })
+      console.debug('Listening to extension messages :)')
+    } catch (e) {
+      console.debug('Failed to read extension messages')
+    }
+    function onMessage(request, sender, sendResponse) {
+      if (onMessageCache === request.time) {
+        return false
+      }
+      onMessageCache = request.time
       switch (request.functiontoInvoke) {
         case 'readSelectedText':
           readSelectedText()
@@ -6101,7 +6128,7 @@ var WordSettings_1 = WordSettings
           halveSpeed()
           break
       }
-    })
+    }
   } catch (e) {
     console.debug('Main script failed!', e)
   }

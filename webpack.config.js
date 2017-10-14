@@ -1,5 +1,5 @@
 module.exports = {
-  entry: "./rolled.js",
+  entry: ['babel-polyfill', './rolled.js'],
   devtool: "source-map",
   output: {
     filename: "distribution/bundle.js"

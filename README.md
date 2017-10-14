@@ -2,6 +2,9 @@
 
 as requested by freenode@vitx
 
+## Yikes! 
+**iframe does not work in Firefox!**
+
 ## Current tasks
 
 - Code refactoring is being done in `source/`

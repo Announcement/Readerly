@@ -10,6 +10,13 @@ export default {
   input: 'original/main.js',
   preferBuiltins: false,
   // sourcemap: true,
+  external: [
+    'jquery',
+    'franc',
+    '@knod/unfluff',
+    '@knod/sbd',
+    '@knod/nouislider'
+  ],
   output: {
     file: 'main.js',
     format: 'cjs'

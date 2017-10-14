@@ -3,29 +3,37 @@ var port
 
 $browser = chrome || browser
 
-// console.log('Opening a port')
+// console.debug('Opening a port')
 // port = $browser.runtime.connect({name: "knockknock"})
 
 function $sendMessage(id, message) {
-  // console.log($browser.extension.getURL())
-  console.log('$sendMessage', id, message)
+  let packet
+  let time
+
+  packet = {}
+  time = Date.now()
+
+  Object.assign(packet, message, {time, id})
+
+  // console.debug($browser.extension.getURL())
+  console.debug('$sendMessage', id, packet)
 
   try {
-    chrome.runtime.sendMessage({ id, message })
-    console.log('using chrome.runtime.sendMessage')
+    chrome.runtime.sendMessage(packet)
+    console.debug('using chrome.runtime.sendMessage')
     // return true
   } catch (exception) {
     console.warn('Could not sendMessage using chrome.runtime', exception)
   }
 
   try {
-    console.debug('Running execute script')
+    console.debug('using browser.runtime.sendMessage')
 
-    browser.tabs.executeScript(id, { file: 'main.js' }, function() {
-      console.debug('using browser.runtime.sendMessage')
-
-      browser.runtime.sendMessage({ id, message })
-    })
+    // browser.tabs.executeScript(id, { file: 'main.js' }, function() {
+    // console.debug('Running execute script')
+    //
+    // })
+    browser.runtime.sendMessage(packet)
 
     // return true
   } catch (exception) {
@@ -34,20 +42,20 @@ function $sendMessage(id, message) {
 
   // what chrome uses...
   try {
-    chrome.tabs.sendMessage(id, message)
-    console.log('using chrome.tabs.sendMessage')
+    chrome.tabs.sendMessage(id, packet)
+    console.debug('using chrome.tabs.sendMessage')
     // return true
   } catch (exception) {
     console.warn('Could not sendMessage using chrome.tabs', exception)
   }
 
   try {
-    console.debug('Running execute script')
+    console.debug('using browser.tabs.sendMessage')
 
-    browser.tabs.executeScript(id, { file: 'main.js' }, function() {
-      console.log('using browser.tabs.sendMessage')
-      browser.tabs.sendMessage(id, message)
-    })
+    // browser.tabs.executeScript(id, { file: 'main.js' }, function() {
+    // console.debug('Running execute script')
+    // })
+    browser.tabs.sendMessage(id, packet)
 
     // return true
   } catch (exception) {
@@ -56,14 +64,14 @@ function $sendMessage(id, message) {
 }
 
 function onContextCLick(info, tab) {
-  console.log('onContextCLick', info, tab)
+  console.debug('onContextCLick', info, tab)
   $browser.tabs.query(
     {
       active: true,
       currentWindow: true
     },
     function(tabs) {
-      console.log('query tabs')
+      console.debug('query tabs')
       $sendMessage(tabs[0].id, {
         functiontoInvoke: 'readSelectedText',
         selectedText: info.selectionText
@@ -73,14 +81,14 @@ function onContextCLick(info, tab) {
 }
 
 function onReadSelectionShortcut() {
-  console.log('onReadSelectionShortcut')
+  console.debug('onReadSelectionShortcut')
   $browser.tabs.query(
     {
       active: true,
       currentWindow: true
     },
     function(tabs) {
-      console.log('query tabs')
+      console.debug('query tabs')
       $sendMessage(tabs[0].id, {
         functiontoInvoke: 'readSelectedText'
       })
@@ -96,7 +104,7 @@ function onGetSelection(info, tab) {
       currentWindow: true
     },
     function(tabs) {
-      console.log('query tabs')
+      console.debug('query tabs')
       $sendMessage(tabs[0].id, {
         functiontoInvoke: 'getSelection'
       })
@@ -109,7 +117,7 @@ function onIconClick(tab) {
 
   bundle = $browser.extension.getURL('bundle.js')
 
-  console.log('clickey click', bundle)
+  console.debug('clickey click', bundle)
 
   $browser.tabs.query(
     {
@@ -117,36 +125,40 @@ function onIconClick(tab) {
       currentWindow: true
     },
     list => {
-      console.log('list is here!')
+      console.debug('list is here!')
       list.forEach(item => {
-        console.log(item)
+        console.debug(item)
 
         // lel chrome
-        if (typeof browser === "undefined") {
+        if (typeof browser === 'undefined') {
           $sendMessage(item.id, {
             functiontoInvoke: 'readFullPage'
           })
         }
 
         // firefox
-        if (typeof browser !== "undefined") {
-          try {
-            console.log(
-              'script',
-              $browser.tabs.executeScript({
-                file: '/bundle.js',
-                allFrames: true
-              })
-              .then(it => {
-                console.debug('then')
-              })
-              .catch(it => {
-                console.debug('catch')
-              })
-            )
-          } catch (exception) {
-            console.log('execution', exception)
-          }
+        if (typeof browser !== 'undefined') {
+          $sendMessage(item.id, {
+            functiontoInvoke: 'readFullPage'
+          })
+          // try {
+          //   // console.debug(
+          //   //   'script',
+          //   //   $browser.tabs
+          //   //     .executeScript({
+          //   //       file: '/bundle.js',
+          //   //       allFrames: true
+          //   //     })
+          //   //     .then(it => {
+          //   //       console.debug('then')
+          //   //     })
+          //   //     .catch(it => {
+          //   //       console.debug('catch')
+          //   //     })
+          //   // )
+          // } catch (exception) {
+          //   console.debug('execution', exception)
+          // }
         }
       })
     }
@@ -160,19 +172,19 @@ function onIconClick(tab) {
   // console.debug('onIconClick', results)
   // console.debug('onIconClick', tab)
 
-  // console.log(browser.tabs.getCurrent())
+  // console.debug(browser.tabs.getCurrent())
 
   // browser.browserAction.enable(tab.id)
   //
   // $browser.tabs.executeScript({file: "/bundle.js"})
   //   .then(it => {
-  //     console.log('then', it)
+  //     console.debug('then', it)
   //   })
   //   .catch(it => {
-  //     console.log('catch', it)
+  //     console.debug('catch', it)
   //   })
 
-  // console.log('query tabs')
+  // console.debug('query tabs')
   // $browser.tabs.query({
   //   "active": true,
   //   "currentWindow": true
@@ -184,14 +196,14 @@ function onIconClick(tab) {
 }
 
 function onHalveSpeed(info, tab) {
-  console.log('onHalveSpeed', info, tab)
+  console.debug('onHalveSpeed', info, tab)
   $browser.tabs.query(
     {
       active: true,
       currentWindow: true
     },
     function(tabs) {
-      console.log('query tabs')
+      console.debug('query tabs')
       $sendMessage(tabs[0].id, {
         functiontoInvoke: 'halveSpeed'
       })
@@ -217,37 +229,37 @@ $browser.contextMenus.create({
   onclick: onGetSelection
 })
 
-console.log('$browser.browserAction.onClicked.addListener')
+console.debug('$browser.browserAction.onClicked.addListener')
 // Handle clicking on the browser icon
 $browser.browserAction.onClicked.addListener(function(tab) {
-  console.log('browserAction.onclicked')
+  console.debug('browserAction.onclicked')
   onIconClick()
 })
 
 $browser.tabs.onCreated.addListener(function(tab) {
   let file
 
-  console.log(tab)
+  console.debug(tab)
   // file =
 
   // browser.tabs.executeScript(tab.id, {file}, function() {
-  //   console.log('attached main.js')
+  //   console.debug('attached main.js')
   // })
 
-  console.log('created a tab', tab)
+  console.debug('created a tab', tab)
 })
 
 $browser.tabs.onUpdated.addListener(function(tab) {
-  console.log('updated a tab', tab)
+  console.debug('updated a tab', tab)
 })
 
 $browser.tabs.onReplaced.addListener(function(tab) {
-  console.log('replaced a tab', tab)
+  console.debug('replaced a tab', tab)
 })
 
-console.log('$browser.commands.onCommand.addListener')
+console.debug('$browser.commands.onCommand.addListener')
 $browser.commands.onCommand.addListener(function(command) {
-  console.log('$browser.commands.onCommand', command)
+  console.debug('$browser.commands.onCommand', command)
 
   switch (command) {
     case 'read_selection':
