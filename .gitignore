@@ -58,6 +58,5 @@ typings/
 .env
 
 web-ext-artifacts
-*.zip
 
 *.fxsnapshot
