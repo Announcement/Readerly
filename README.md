@@ -2,6 +2,8 @@
 
 as requested by freenode@vitx
 
+the plugin itself is in `/distribution/`
+
 ## WARNING
 
 **DO NOT LOAD THIS PLUGIN WITH MULTIPLE TABS OPEN**
