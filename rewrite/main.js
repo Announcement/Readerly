@@ -28,8 +28,14 @@ function onMessage (request, sender, sendResponse) {
 
   onMessageCache = request.time
 
-  display.open()
-  display.focus()
+  onClicked()
+
+  function onClicked () {
+    if (request.message === 'browserAction:onClicked') {
+      display.open()
+      display.focus()
+    }
+  }
 }
 
 try {
