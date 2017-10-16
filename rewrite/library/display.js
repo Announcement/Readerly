@@ -64,20 +64,13 @@ let stylesheet = {
     borderColor: 'transparent',
     borderWidth: '0',
     minWidth: '88px',
-    boxShadow: shadow('2dp'),
-    // marginTop: 'auto',
-    // marginLeft: '8px',
-    // marginRight: '8px',
-    // marginBottom: 'auto'
+    boxShadow: shadow('2dp')
   },
   'button.settings': {
     gridColumnStart: '2',
     gridColumnEnd: 'span 1',
-    // height: '36px',
-    // width: '36px',
     backgroundImage: `url("${settingsImageSource}")`,
     backgroundSize: '32px 32px',
-    // backgroundColor: 'transparent',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
     minWidth: '36px',
@@ -88,11 +81,8 @@ let stylesheet = {
   'button.speed': {
     gridColumnStart: '3',
     gridColumnEnd: 'span 1',
-    // height: '36px',
-    // width: '36px',
     backgroundImage: `url("${rewindImageSource}")`,
     backgroundSize: '32px 32px',
-    // backgroundColor: 'transparent',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
     minWidth: '36px',
@@ -102,8 +92,7 @@ let stylesheet = {
   },
   'button.close': {},
   'div.playback': {
-    width: 'available',
-    height: 'available',
+    justifySelf: 'stretch',
     boxShadow: shadow('2dp')
   }
 }
