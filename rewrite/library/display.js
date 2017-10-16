@@ -1,9 +1,9 @@
-// let shadow = ['0', '0', '2px', rgba(128, 128, 128, 0.87)]
+import Playback from './playback'
+
 let $browser = chrome || browser
 
 let rewindImageSource
 let settingsImageSource
-// let spriteImage
 
 function url (it) {
   if (typeof browser === 'undefined') {
@@ -15,10 +15,7 @@ function url (it) {
 
 settingsImageSource = url('images/settings.png')
 rewindImageSource = url('images/rewind.png')
-// spriteImage = url('images/sprites.png')
 
-console.debug(settingsImageSource)
-console.debug(rewindImageSource)
 
 function shadow (elevation) {
   let sketch
@@ -104,6 +101,11 @@ let stylesheet = {
     color: 'transparent'
   },
   'button.close': {},
+  'div.playback': {
+    width: 'available',
+    height: 'available',
+    boxShadow: shadow('2dp')
+  }
 }
 
 function rgba(red, green, blue, alpha) {
@@ -115,12 +117,12 @@ class Display {
     this.filter = new WeakMap()
     this.zIndex = new WeakMap()
 
-    console.debug('generate display')
+    // console.debug('generate display')
     this.element = this.generate()
-    console.debug('element', this.element)
+    // console.debug('element', this.element)
 
     Display.styleize(this.element, stylesheet)
-    console.debug('The display has been stylized.')
+    // console.debug('The display has been stylized.')
 
   }
 
@@ -174,8 +176,6 @@ class Display {
     closeElement.classList.add('close')
     // checkElement.classList.add('check')
 
-    console.debug('attach listeners')
-
     settingsElement.addEventListener('click', () => this._settings())
     speedElement.addEventListener('click', () => this._speed())
     closeElement.addEventListener('click', () => this._close())
@@ -192,9 +192,9 @@ class Display {
         scope(element.children[index])
       }
     }
-    console.debug('run scope')
+    // console.debug('run scope')
     scope(element)
-    console.debug('finish scope')
+    // console.debug('finish scope')
 
     return element
   }
@@ -210,8 +210,22 @@ class Display {
     document.body.removeChild(this.element)
   }
 
-  open () {
+  open (playback) {
+
     document.body.appendChild(this.element)
+  }
+
+  stream (content) {
+    let playbackElement
+    let span
+    let text
+
+    playbackElement = this.element.querySelector('.playback')
+    span = document.createElement('span')
+    text = document.createTextNode(content.text.match(/\w+/)[0])
+
+    span.appendChild(text)
+    playbackElement.appendChild(span)
   }
 
   static styleize (it, styles) {
@@ -220,7 +234,7 @@ class Display {
     let stylesheetElement
     let stylesheetNode
 
-    console.debug('styleize')
+    // console.debug('styleize')
 
     stylesheetElement = document.createElement('style')
 
@@ -230,15 +244,15 @@ class Display {
 
     this.stylesheet = stylesheetNode
 
-    console.debug('insert rules')
+    // console.debug('insert rules')
 
     // these are to override the default progress bar in chrome since they look like garbage.
     if (typeof browser === 'undefined') {
       this.stylesheet.insertRule('progress::-webkit-progress-bar { background: #8C9EFF; }')
       this.stylesheet.insertRule('progress::-webkit-progress-value { background: #3D5AFE; }')
     }
-    
-    console.debug('Read virtual stylesheet')
+
+    // console.debug('Read virtual stylesheet')
 
     Object.keys(styles).forEach(key => {
       let value
@@ -249,7 +263,7 @@ class Display {
         value = value.join(' ')
       }
 
-      console.debug(styles, key)
+      // console.debug(styles, key)
 
       assign(key, value)
       find(key, value)

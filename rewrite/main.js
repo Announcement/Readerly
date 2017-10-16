@@ -1,7 +1,11 @@
 import Display from './library/display'
+import Playback from './library/playback'
 
 let $browser
+
 let display
+let everything
+
 let onMessageCache
 let queue
 
@@ -10,16 +14,11 @@ queue = []
 
 // $browser.runtime.onMessage.addListener(message)
 
-console.debug('Waiting for the document.')
-
 // document.addEventListener('DOMContentLoaded', function () {
 // })
 
-console.debug('Trying to load display.')
-
 display = new Display()
-
-console.debug('The display is finally ready.')
+everything = new Playback(document.body.outerHTML)
 
 function onMessage (request, sender, sendResponse) {
   if (onMessageCache === request.time) {
@@ -31,9 +30,13 @@ function onMessage (request, sender, sendResponse) {
   onClicked()
 
   function onClicked () {
+    let playback
+
     if (request.message === 'browserAction:onClicked') {
       display.open()
       display.focus()
+
+      display.stream(everything)
     }
   }
 }

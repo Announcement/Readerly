@@ -1,8 +1,8 @@
 module.exports = {
-  entry: ['babel-polyfill', './original/main.js'],
+  entry: ['babel-polyfill', './rewrite/main.js'],
   devtool: "source-map",
   output: {
-    filename: "distribution/bundle.js"
+    filename: "rewrite/bundle.js"
   },
   module: {
     rules: [
