@@ -30,6 +30,10 @@ class Display {
   _close () {
     this.blur()
     this.close()
+
+    if (this.timeout) {
+      clearTimeout(this.timeout)
+    }
   }
 
   close () {
@@ -45,6 +49,7 @@ class Display {
     let playbackElement
     let progressElement
     let words
+    let read
 
     let span
     let text
@@ -64,9 +69,8 @@ class Display {
     progressElement.setAttribute('max', maximum)
     progressElement.setAttribute('value', value)
 
-    read()
 
-    function read () {
+    read = () => {
       let span
       let text
 
@@ -84,14 +88,17 @@ class Display {
       playbackElement.appendChild(span)
 
       if (words.length > value) {
-        setTimeout(read, 1000 * 60 / 200)
+        this.timeout = setTimeout(read, 1000 * 60 / 200)
       }
     }
+
+    read()
 
     while (playbackElement.firstChild) {
       playbackElement.removeChild(playbackElement.firstChild)
     }
   }
+
 
   static styleize (it, styles) {
     if (!it) return false
