@@ -1,36 +1,10 @@
-let rewindImageSource
-let settingsImageSource
+import rgba from '../utilities/css/rgba'
+import rgb from '../utilities/css/rgb'
 
-function url (it) {
-  if (typeof browser === 'undefined') {
-    return chrome.runtime.getURL(it)
-  } else {
-    return browser.extension.getURL(it)
-  }
-}
+import {white, transparent} from '../utilities/css/colors'
 
-settingsImageSource = url('images/settings.png')
-rewindImageSource = url('images/rewind.png')
-
-
-function shadow (elevation) {
-  let sketch
-
-  sketch = {}
-
-  sketch['2dp'] =
-    [
-      ['0', '0', '4px', rgba(0, 0, 0, .14)],
-      ['0', '3px', '4px', rgba(0, 0, 0, .12)],
-      ['0', '1px', '5px', rgba(128, 128, 128, .20)]
-    ].map(it => it.join(' ')).join(', ')
-
-  return sketch[elevation]
-}
-
-function rgba(red, green, blue, alpha) {
-  return `rgba(${red}, ${green}, ${blue}, ${alpha})`
-}
+import shadow from '../utilities/css/shadow'
+import url from '../utilities/css/url'
 
 export default {
   position: 'fixed',
@@ -38,7 +12,7 @@ export default {
   left: '0',
   width: '100%',
   height: '80px',
-  background: rgba(255, 255, 255, 0.8),
+  background: white,
   boxShadow: shadow('2dp'),
   display: 'grid',
   justifyItems: 'center',
@@ -52,7 +26,7 @@ export default {
     width: '100%',
     height: '100%',
     WebkitAppearance: 'none',
-    background: 'white',
+    background: white,
   },
   button: {
     height: '36px',
@@ -61,7 +35,7 @@ export default {
     paddingRight: '16px',
     outline: 'none',
     borderStyle: 'solid',
-    borderColor: 'transparent',
+    borderColor: transparent,
     borderWidth: '0',
     minWidth: '88px',
     boxShadow: shadow('2dp')
@@ -69,32 +43,33 @@ export default {
   'button.settings': {
     gridColumnStart: '2',
     gridColumnEnd: 'span 1',
-    backgroundImage: `url("${settingsImageSource}")`,
+    backgroundImage: url('images/settings.png'),
     backgroundSize: '32px 32px',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
     minWidth: '36px',
     width: `${36 + 16 * 2}px`,
     content: '',
-    color: 'transparent'
+    color: transparent
   },
   'button.speed': {
     gridColumnStart: '3',
     gridColumnEnd: 'span 1',
-    backgroundImage: `url("${rewindImageSource}")`,
+    backgroundImage: url('images/rewind.png'),
     backgroundSize: '32px 32px',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
     minWidth: '36px',
     width: `${36 + 16 * 2}px`,
     content: '',
-    color: 'transparent'
+    color: transparent
   },
   'button.close': {},
   'div.playback': {
     justifySelf: 'stretch',
     height: '36px',
     lineHeight: '36px',
-    textAlign: 'center'
+    textAlign: 'center',
+    fontSize: '35px'
   }
 }
