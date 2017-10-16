@@ -1,1 +1,2 @@
-**/*.js
+distribution/**/*.js
+original/**/*.js

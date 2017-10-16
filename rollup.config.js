@@ -5,6 +5,7 @@ import json from 'rollup-plugin-json'
 import cleanup from 'rollup-plugin-cleanup'
 import prettier from 'rollup-plugin-prettier'
 import butternut from 'rollup-plugin-butternut'
+import babel from 'rollup-plugin-babel'
 
 export default {
   input: 'original/main.js',
@@ -26,12 +27,24 @@ export default {
     commonjs(),
     // nodeResolve(),
     json(),
+    babel({
+      babelrc: false,
+      presets: [
+        [
+          'env',
+          {
+            modules: false
+          }
+        ]
+      ],
+      plugins: ['external-helpers']
+    }),
     cleanup(),
-    butternut(),
-    prettier({
-      // sourceMap: true,
-      singleQuote: true,
-      semi: false
-    })
+    // butternut(),
+    // prettier({
+    //   // sourceMap: true,
+    //   singleQuote: true,
+    //   semi: false
+    // })
   ]
 }

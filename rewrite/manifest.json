@@ -1,0 +1,31 @@
+{
+  "manifest_version": 2,
+  "version": "2",
+  "name": "Readerly 2",
+  "icons": {
+    "128": "icon128.png",
+    "64": "icon64.png",
+    "32": "icon32.png"
+  },
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.mozilla.org/*", "*://*.wikipedia.org/*"],
+      "js": ["build.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "web_accessible_resources": [
+    "fonts/*",
+    "images/*"
+  ],
+  "permissions": [
+    "activeTab"
+  ],
+  "browser_action": {
+    "default_icon": "icon128.png",
+    "default_title": "Readerly"
+  }
+}
