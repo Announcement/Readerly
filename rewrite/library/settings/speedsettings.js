@@ -15,7 +15,7 @@ class SpeedSettings extends SettingsPanel {
     sentenceEndDelay = new Setting('Sentence End Delay')
     punctuationDelay = new Setting('Punctuation Delay')
     longWordDelay = new Setting('Long Word Delay')
-    specialPatternDelay = new Setting('Special Pattern Delay')    
+    specialPatternDelay = new Setting('Special Pattern Delay')
 
     wordsPerMinute.step = 25.00
     sentenceEndDelay.step = 0.10
@@ -45,7 +45,7 @@ class SpeedSettings extends SettingsPanel {
     sentenceEndDelay.sync()
     punctuationDelay.sync()
     longWordDelay.sync()
-    specialPatternDelay.sync
+    specialPatternDelay.sync()
 
     this.add(wordsPerMinute)
     this.add(sentenceEndDelay)

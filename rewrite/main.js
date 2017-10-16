@@ -33,10 +33,10 @@ function onMessage(request, sender, sendResponse) {
     let playback
 
     if (request.message === 'browserAction:onClicked') {
-      display.open()
-      display.focus()
-
-      display.stream(everything)
+      // display.open()
+      // display.focus()
+      // display.stream(everything)
+      display.toggle(everything)
     }
   }
 }

@@ -23,6 +23,7 @@ class Display {
     this.listen()
 
     Display.styleize(this.element, stylesheet)
+    this.element.removeChild(this.settings.element)
   }
 
   listen() {
@@ -44,20 +45,37 @@ class Display {
   }
 
   _settings() {
-    this.settings.toggle()
+    if (this.element.contains(this.settings.element)) {
+      this.element.removeChild(this.settings.element)
+    } else {
+      this.element.appendChild(this.settings.element)
+    }
   }
+
   _speed() {}
   _close() {
     this.blur()
     this.close()
+  }
 
-    if (this.timeout) {
-      clearTimeout(this.timeout)
+  toggle (it) {
+    if (document.body.contains(this.element)) {
+      this.close()
+      this.blur()
+    } else {
+      this.open()
+      this.focus()
+      
+      if (it) this.stream(it)
     }
   }
 
   close() {
     document.body.removeChild(this.element)
+
+    if (this.timeout) {
+      clearTimeout(this.timeout)
+    }
   }
 
   open(playback) {

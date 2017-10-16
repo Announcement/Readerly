@@ -46,21 +46,22 @@ class Settings {
     this.tabs.add(wordSettings.tab)
 
     this.element.appendChild(this.tabs.element)
-    this.panels.forEach(it => this.element.appendChild(it.element))
+    this.element.appendChild(this.panels[0].element)
+    // this.panels.forEach(it => this.element.appendChild(it.element))
+
+    this.panels.forEach(panel => {
+      panel.tab.element.addEventListener('click', () => {
+        this.panels.forEach(it => {
+          if (this.element.contains(it.element)) {
+            this.element.removeChild(it.element)
+          }
+        })
+
+        this.element.appendChild(panel.element)
+      })
+    })
 
     this.element = scope(this.element)
-  }
-
-  toggle() {
-    !this.visible ? this.show() : this.hide()
-  }
-
-  show() {
-    this.element.display = 'block'
-  }
-
-  hide() {
-    this.element.display = 'none'
   }
 }
 

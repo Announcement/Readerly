@@ -105,6 +105,7 @@ export default {
     form: {
       display: 'flex',
       justifyContent: 'space-evenly',
+      flexWrap: 'wrap',
       fieldset: {
         display: 'inline-block',
         width: 'max-content',
@@ -114,7 +115,8 @@ export default {
         width: '45px',
         height: '23px',
         verticalAlign: 'middle',
-        outline: 'none'
+        outline: 'none',
+        textAlign: 'center'
       },
       'input.range': {
         verticalAlign: 'middle',
