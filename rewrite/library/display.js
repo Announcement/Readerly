@@ -17,8 +17,8 @@ settingsImageSource = url('images/settings.png')
 rewindImageSource = url('images/rewind.png')
 // spriteImage = url('images/sprites.png')
 
-console.log(settingsImageSource)
-console.log(rewindImageSource)
+console.debug(settingsImageSource)
+console.debug(rewindImageSource)
 
 function shadow (elevation) {
   let sketch
@@ -115,11 +115,13 @@ class Display {
     this.filter = new WeakMap()
     this.zIndex = new WeakMap()
 
+    console.debug('generate display')
     this.element = this.generate()
+    console.debug('element', this.element)
 
     Display.styleize(this.element, stylesheet)
+    console.debug('The display has been stylized.')
 
-    console.log(this.element)
   }
 
   generate () {
@@ -172,6 +174,8 @@ class Display {
     closeElement.classList.add('close')
     // checkElement.classList.add('check')
 
+    console.debug('attach listeners')
+
     settingsElement.addEventListener('click', () => this._settings())
     speedElement.addEventListener('click', () => this._speed())
     closeElement.addEventListener('click', () => this._close())
@@ -188,8 +192,9 @@ class Display {
         scope(element.children[index])
       }
     }
-
+    console.debug('run scope')
     scope(element)
+    console.debug('finish scope')
 
     return element
   }
@@ -215,6 +220,8 @@ class Display {
     let stylesheetElement
     let stylesheetNode
 
+    console.debug('styleize')
+
     stylesheetElement = document.createElement('style')
 
     document.head.appendChild(stylesheetElement)
@@ -223,17 +230,26 @@ class Display {
 
     this.stylesheet = stylesheetNode
 
+    console.debug('insert rules')
+
     // these are to override the default progress bar in chrome since they look like garbage.
-    this.stylesheet.insertRule('progress::-webkit-progress-bar { background: #8C9EFF; }')
-    this.stylesheet.insertRule('progress::-webkit-progress-value { background: #3D5AFE; }')
+    if (typeof browser === 'undefined') {
+      this.stylesheet.insertRule('progress::-webkit-progress-bar { background: #8C9EFF; }')
+      this.stylesheet.insertRule('progress::-webkit-progress-value { background: #3D5AFE; }')
+    }
+    
+    console.debug('Read virtual stylesheet')
 
     Object.keys(styles).forEach(key => {
       let value
 
       value = styles[key]
+
       if (value.constructor === Array) {
         value = value.join(' ')
       }
+
+      console.debug(styles, key)
 
       assign(key, value)
       find(key, value)

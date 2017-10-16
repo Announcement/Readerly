@@ -12,9 +12,9 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://*.mozilla.org/*", "*://*.wikipedia.org/*"],
+      "matches": ["*://*/*", "<all_urls>"],
       "js": ["build.js"],
-      "run_at": "document_start"
+      "run_at": "document_end"
     }
   ],
   "web_accessible_resources": [

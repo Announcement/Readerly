@@ -46,6 +46,7 @@ if (!$browser.browserAction.onClicked.hasListener(listener)) {
 
 function listener (tab) {
   let message = 'hi web page!'
+
   $sendMessage(tab.id, {
     tab,
     message

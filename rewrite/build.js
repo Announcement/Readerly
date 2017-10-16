@@ -163,8 +163,8 @@ function url(it) {
 }
 settingsImageSource = url('images/settings.png');
 rewindImageSource = url('images/rewind.png');
-console.log(settingsImageSource);
-console.log(rewindImageSource);
+console.debug(settingsImageSource);
+console.debug(rewindImageSource);
 function shadow(elevation) {
   var sketch = void 0;
   sketch = {};
@@ -241,9 +241,11 @@ var Display = function () {
     classCallCheck(this, Display);
     this.filter = new WeakMap();
     this.zIndex = new WeakMap();
+    console.debug('generate display');
     this.element = this.generate();
+    console.debug('element', this.element);
     Display.styleize(this.element, stylesheet);
-    console.log(this.element);
+    console.debug('The display has been stylized.');
   }
   createClass(Display, [{
     key: 'generate',
@@ -283,6 +285,7 @@ var Display = function () {
       speedElement.classList.add('speed');
       playbackElement.classList.add('playback');
       closeElement.classList.add('close');
+      console.debug('attach listeners');
       settingsElement.addEventListener('click', function () {
         return _this._settings();
       });
@@ -301,7 +304,9 @@ var Display = function () {
           scope(element.children[index]);
         }
       }
+      console.debug('run scope');
       scope(element);
+      console.debug('finish scope');
       return element;
     }
   }, {
@@ -361,18 +366,24 @@ var Display = function () {
       if (!it) return false;
       var stylesheetElement = void 0;
       var stylesheetNode = void 0;
+      console.debug('styleize');
       stylesheetElement = document.createElement('style');
       document.head.appendChild(stylesheetElement);
       stylesheetNode = document.styleSheets[document.styleSheets.length - 1];
       this.stylesheet = stylesheetNode;
-      this.stylesheet.insertRule('progress::-webkit-progress-bar { background: #8C9EFF; }');
-      this.stylesheet.insertRule('progress::-webkit-progress-value { background: #3D5AFE; }');
+      console.debug('insert rules');
+      if (typeof browser === 'undefined') {
+        this.stylesheet.insertRule('progress::-webkit-progress-bar { background: #8C9EFF; }');
+        this.stylesheet.insertRule('progress::-webkit-progress-value { background: #3D5AFE; }');
+      }
+      console.debug('Read virtual stylesheet');
       Object.keys(styles).forEach(function (key) {
         var value = void 0;
         value = styles[key];
         if (value.constructor === Array) {
           value = value.join(' ');
         }
+        console.debug(styles, key);
         assign(key, value);
         find(key, value);
       });
@@ -398,15 +409,43 @@ var Display = function () {
 
 var $browser = void 0;
 var display = void 0;
+var onMessageCache = void 0;
 $browser = chrome || browser;
 console.debug('Waiting for the document.');
-document.addEventListener('DOMContentLoaded', function () {
-  display = new Display();
-});
-$browser.runtime.onMessage.addListener(message);
-function message(it) {
+console.debug('Trying to load display.');
+display = new Display();
+console.debug('The display is finally ready.');
+function onMessage(request, sender, sendResponse) {
+  if (onMessageCache === request.time) {
+    return false;
+  }
+  onMessageCache = request.time;
   display.open();
   display.focus();
+}
+try {
+  $browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    if (onMessageCache === request.time) {
+      return false;
+    }
+    console.debug('runtime message', request, sender);
+    onMessage(request, sender, sendResponse);
+  });
+  console.debug('Listening to runtime messages :)');
+} catch (e) {
+  console.debug('Failed to read extension messages');
+}
+try {
+  $browser.extension.onMessage.addListener(function (request, sender, sendResponse) {
+    if (onMessageCache === request.time) {
+      return false;
+    }
+    console.debug('extension message', request, sender);
+    onMessage(request, sender, sendResponse);
+  });
+  console.debug('Listening to extension messages :)');
+} catch (e) {
+  console.debug('Failed to read extension messages');
 }
 
 }());
