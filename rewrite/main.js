@@ -20,7 +20,7 @@ queue = []
 display = new Display()
 everything = new Playback(document.body.outerHTML)
 
-function onMessage (request, sender, sendResponse) {
+function onMessage(request, sender, sendResponse) {
   if (onMessageCache === request.time) {
     return false
   }
@@ -29,7 +29,7 @@ function onMessage (request, sender, sendResponse) {
 
   onClicked()
 
-  function onClicked () {
+  function onClicked() {
     let playback
 
     if (request.message === 'browserAction:onClicked') {

@@ -1,33 +1,53 @@
 import stylesheet from './display/stylesheet'
 import generate from './display/generate'
+import Settings from './settings'
 
 let $browser = chrome || browser
 
 class Display {
-  constructor () {
+  constructor() {
     this.filter = new WeakMap()
     this.zIndex = new WeakMap()
 
-    this.element = generate()
+    this.element = document.createElement('section')
+    this.element.classList.add('display')
+
+    this.settings = new Settings()
+
+    this.element.appendChild(generate())
+    this.element.appendChild(this.settings.element)
+    this.element.id = 'readerly'
+
+    console.debug(this.element)
 
     this.listen()
 
     Display.styleize(this.element, stylesheet)
   }
 
-  listen () {
+  listen() {
     let element
 
     element = this.element
 
-    element.querySelector('button.settings').addEventListener('click', () => this._settings())
-    element.querySelector('button.speed').addEventListener('click', () => this._speed())
-    element.querySelector('button.close').addEventListener('click', () => this._close())
+    element
+      .querySelector('button.settings')
+      .addEventListener('click', () => this._settings())
+
+    element
+      .querySelector('button.speed')
+      .addEventListener('click', () => this._speed())
+
+    element
+      .querySelector('button.close')
+      .addEventListener('click', () => this._close())
   }
 
-  _settings () {}
-  _speed () {}
-  _close () {
+  _settings() {
+    this.settings.toggle()
+  }
+  _speed() {}
+  _close() {
     this.blur()
     this.close()
 
@@ -36,16 +56,15 @@ class Display {
     }
   }
 
-  close () {
+  close() {
     document.body.removeChild(this.element)
   }
 
-  open (playback) {
-
+  open(playback) {
     document.body.appendChild(this.element)
   }
 
-  stream (content) {
+  stream(content) {
     let playbackElement
     let progressElement
     let words
@@ -68,7 +87,6 @@ class Display {
 
     progressElement.setAttribute('max', maximum)
     progressElement.setAttribute('value', value)
-
 
     read = () => {
       let span
@@ -99,8 +117,7 @@ class Display {
     }
   }
 
-
-  static styleize (it, styles) {
+  static styleize(it, styles) {
     if (!it) return false
 
     let stylesheetElement
@@ -120,8 +137,12 @@ class Display {
 
     // these are to override the default progress bar in chrome since they look like garbage.
     if (typeof browser === 'undefined') {
-      this.stylesheet.insertRule('progress::-webkit-progress-bar { background: #8C9EFF; }')
-      this.stylesheet.insertRule('progress::-webkit-progress-value { background: #3D5AFE; }')
+      this.stylesheet.insertRule(
+        'progress::-webkit-progress-bar { background: #8C9EFF; }'
+      )
+      this.stylesheet.insertRule(
+        'progress::-webkit-progress-value { background: #3D5AFE; }'
+      )
     }
 
     // console.debug('Read virtual stylesheet')
@@ -141,7 +162,7 @@ class Display {
       find(key, value)
     })
 
-    function assign (key, value) {
+    function assign(key, value) {
       key = key.replace(/([A-Z])/g, it => '-' + it.toLowerCase())
 
       if (typeof value === 'string') {
@@ -149,14 +170,14 @@ class Display {
       }
     }
 
-    function find (key, value) {
+    function find(key, value) {
       if (typeof value === 'object') {
         it.querySelectorAll(key).forEach(it => Display.styleize(it, value))
       }
     }
   }
 
-  focus () {
+  focus() {
     let zIndexMaximum
 
     zIndexMaximum = 0
@@ -170,14 +191,17 @@ class Display {
 
     document.querySelectorAll('body *').forEach(it => {
       if (it !== this.element && it.style['z-index']) {
-        zIndexMaximum = Math.max(parseInt(it.style['z-index'], 10), zIndexMaximum)
+        zIndexMaximum = Math.max(
+          parseInt(it.style['z-index'], 10),
+          zIndexMaximum
+        )
       }
     })
 
     this.element.style['z-index'] = zIndexMaximum + 1
   }
 
-  blur () {
+  blur() {
     document.querySelectorAll('body > *').forEach(it => {
       if (this.filter.has(it)) {
         it.style.filter = this.filter.get(it)
@@ -185,6 +209,5 @@ class Display {
     })
   }
 }
-
 
 export default Display

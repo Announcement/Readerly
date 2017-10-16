@@ -1,7 +1,9 @@
-function scope (element) {
+function scope(element) {
   let index
 
   element.classList.add('readerly')
+  element.classList.add('display')
+
   element.style.initial = 'all'
 
   for (index = 0; index < element.children.length; index++) {
@@ -11,7 +13,7 @@ function scope (element) {
   return element
 }
 
-export default function generate () {
+export default function generate() {
   let element
   let progressElement
   let settingsElement
@@ -54,8 +56,7 @@ export default function generate () {
   speedElement.classList.add('speed')
   playbackElement.classList.add('playback')
   closeElement.classList.add('close')
-
-  element.id = 'readerly'
+  element.classList.add('display')
 
   return scope(element)
 }

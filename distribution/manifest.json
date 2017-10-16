@@ -5,7 +5,7 @@
   "browser_action": {
     "name": "Readerly",
     "default_icon": "icon128.png",
-    "default_title": "Readerly"
+    "default_title": "Readerly Original"
   },
   "content_scripts": [
     {
@@ -26,7 +26,7 @@
     "32": "icon32.png"
   },
   "manifest_version": 2,
-  "name": "Readerly",
+  "name": "Readerly Original",
   "commands": {
     "read_selection": {
       "suggested_key": { "default": "Ctrl+Shift+Z" },
@@ -56,7 +56,7 @@
     "unlimitedStorage"
   ],
   "short_name": "Readerly",
-  "version": "1.0.0",
+  "version": "1",
   "web_accessible_resources": ["fonts/*", "images/*"],
   "applications": {
     "gecko": {

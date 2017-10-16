@@ -9,7 +9,7 @@ function $sendMessage(id, message) {
   packet = {}
   time = Date.now()
 
-  Object.assign(packet, message, {time, id})
+  Object.assign(packet, message, { time, id })
 
   try {
     chrome.runtime.sendMessage(packet)
@@ -44,7 +44,7 @@ if (!$browser.browserAction.onClicked.hasListener(listener)) {
   $browser.browserAction.onClicked.addListener(listener)
 }
 
-function listener (tab) {
+function listener(tab) {
   let message
 
   message = 'browserAction:onClicked'

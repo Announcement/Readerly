@@ -1,9 +1,9 @@
 class Parasite {
-  constructor (element) {
+  constructor(element) {
     this.element = element
   }
 
-  static getText (it) {
+  static getText(it) {
     let childNodes
     let child
     let index
@@ -32,7 +32,7 @@ class Parasite {
       }
 
       if (child.nodeType === 3) {
-        list.push({name: it.tagName, content: child.textContent})
+        list.push({ name: it.tagName, content: child.textContent })
       }
     }
 
