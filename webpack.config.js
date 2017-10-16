@@ -1,6 +1,6 @@
 module.exports = {
   entry: ['babel-polyfill', './rewrite/main.js'],
-  devtool: "source-map",
+  devtool: "eval",
   output: {
     filename: "rewrite/bundle.js"
   },

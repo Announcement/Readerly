@@ -1,191 +1,28 @@
-import Playback from './playback'
+import stylesheet from './display/stylesheet'
+import generate from './display/generate'
 
 let $browser = chrome || browser
-
-let rewindImageSource
-let settingsImageSource
-
-function url (it) {
-  if (typeof browser === 'undefined') {
-    return chrome.runtime.getURL(it)
-  } else {
-    return browser.extension.getURL(it)
-  }
-}
-
-settingsImageSource = url('images/settings.png')
-rewindImageSource = url('images/rewind.png')
-
-
-function shadow (elevation) {
-  let sketch
-
-  sketch = {}
-
-  sketch['2dp'] =
-    [
-      ['0', '0', '4px', rgba(0, 0, 0, .14)],
-      ['0', '3px', '4px', rgba(0, 0, 0, .12)],
-      ['0', '1px', '5px', rgba(128, 128, 128, .20)]
-    ].map(it => it.join(' ')).join(', ')
-
-  return sketch[elevation]
-}
-
-let stylesheet = {
-  position: 'fixed',
-  top: '0',
-  left: '0',
-  width: '100%',
-  height: '80px',
-  background: rgba(255, 255, 255, 0.8),
-  boxShadow: shadow('2dp'),
-  display: 'grid',
-  justifyItems: 'center',
-  alignItems: 'center',
-  gridTemplateRows: '4px 1fr',
-  gridTemplateColumns: '24px min-content min-content 1fr min-content 24px',
-  gridColumnGap: '8px',
-  progress: {
-    gridColumnStart: '1',
-    gridColumnEnd: 'span 6',
-    width: '100%',
-    height: '100%',
-    WebkitAppearance: 'none',
-    background: 'white',
-  },
-  button: {
-    height: '36px',
-    borderRadius: '2px',
-    paddingLeft: '16px',
-    paddingRight: '16px',
-    outline: 'none',
-    borderStyle: 'solid',
-    borderColor: 'transparent',
-    borderWidth: '0',
-    minWidth: '88px',
-    boxShadow: shadow('2dp')
-  },
-  'button.settings': {
-    gridColumnStart: '2',
-    gridColumnEnd: 'span 1',
-    backgroundImage: `url("${settingsImageSource}")`,
-    backgroundSize: '32px 32px',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
-    minWidth: '36px',
-    width: `${36 + 16 * 2}px`,
-    content: '',
-    color: 'transparent'
-  },
-  'button.speed': {
-    gridColumnStart: '3',
-    gridColumnEnd: 'span 1',
-    backgroundImage: `url("${rewindImageSource}")`,
-    backgroundSize: '32px 32px',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
-    minWidth: '36px',
-    width: `${36 + 16 * 2}px`,
-    content: '',
-    color: 'transparent'
-  },
-  'button.close': {},
-  'div.playback': {
-    justifySelf: 'stretch',
-    boxShadow: shadow('2dp')
-  }
-}
-
-function rgba(red, green, blue, alpha) {
-  return `rgba(${red}, ${green}, ${blue}, ${alpha})`
-}
 
 class Display {
   constructor () {
     this.filter = new WeakMap()
     this.zIndex = new WeakMap()
 
-    // console.debug('generate display')
-    this.element = this.generate()
-    // console.debug('element', this.element)
+    this.element = generate()
+
+    this.listen()
 
     Display.styleize(this.element, stylesheet)
-    // console.debug('The display has been stylized.')
-
   }
 
-  generate () {
+  listen () {
     let element
-    let progressElement
-    let settingsElement
-    let speedElement
-    let playbackElement
-    let closeElement
-    let checkElement
 
-    let settingsText
-    let speedText
-    let closeText
+    element = this.element
 
-    element = document.createElement('section')
-
-    progressElement = document.createElement('progress')
-    settingsElement = document.createElement('button')
-    speedElement = document.createElement('button')
-    closeElement = document.createElement('button')
-    checkElement = document.createElement('input')
-    playbackElement = document.createElement('div')
-
-    settingsText = document.createTextNode('Settings')
-    speedText = document.createTextNode('Speed')
-    closeText = document.createTextNode('Close')
-
-    settingsElement.appendChild(settingsText)
-    speedElement.appendChild(speedText)
-    closeElement.appendChild(closeText)
-
-    element.appendChild(progressElement)
-    element.appendChild(settingsElement)
-    element.appendChild(speedElement)
-    element.appendChild(playbackElement)
-    element.appendChild(closeElement)
-
-    // settingsElement.setAttribute('src', settingsImageSource)
-    // speedElement.setAttribute('src', rewindImageSource)
-    // element.appendChild(checkElement)
-
-    // checkElement.setAttribute('type', 'checkbox')
-    progressElement.setAttribute('value', '50')
-    progressElement.setAttribute('max', '100')
-
-    settingsElement.classList.add('settings')
-    speedElement.classList.add('speed')
-    playbackElement.classList.add('playback')
-    closeElement.classList.add('close')
-    // checkElement.classList.add('check')
-
-    settingsElement.addEventListener('click', () => this._settings())
-    speedElement.addEventListener('click', () => this._speed())
-    closeElement.addEventListener('click', () => this._close())
-
-    element.id = 'readerly'
-
-    function scope (element) {
-      let index
-
-      element.classList.add('readerly')
-      element.style.initial = 'all'
-
-      for (index = 0; index < element.children.length; index++) {
-        scope(element.children[index])
-      }
-    }
-    // console.debug('run scope')
-    scope(element)
-    // console.debug('finish scope')
-
-    return element
+    element.querySelector('button.settings').addEventListener('click', () => this._settings())
+    element.querySelector('button.speed').addEventListener('click', () => this._speed())
+    element.querySelector('button.close').addEventListener('click', () => this._close())
   }
 
   _settings () {}
@@ -206,15 +43,54 @@ class Display {
 
   stream (content) {
     let playbackElement
+    let progressElement
+    let words
+
     let span
     let text
 
-    playbackElement = this.element.querySelector('.playback')
-    span = document.createElement('span')
-    text = document.createTextNode(content.text.match(/\w+/)[0])
+    let value
+    let maximum
 
-    span.appendChild(text)
-    playbackElement.appendChild(span)
+    playbackElement = this.element.querySelector('.playback')
+    progressElement = this.element.querySelector('progress')
+
+    console.debug(content.text)
+
+    words = content.text.split(/\s+/g)
+    maximum = words.length
+    value = 0
+
+    progressElement.setAttribute('max', maximum)
+    progressElement.setAttribute('value', value)
+
+    read()
+
+    function read () {
+      let span
+      let text
+
+      while (playbackElement.firstChild) {
+        playbackElement.removeChild(playbackElement.firstChild)
+      }
+
+      span = document.createElement('span')
+      text = document.createTextNode(words[value++])
+
+      progressElement.setAttribute('value', value)
+      console.log(value, maximum)
+
+      span.appendChild(text)
+      playbackElement.appendChild(span)
+
+      if (words.length > value) {
+        setTimeout(read, 1000 * 60 / 200)
+      }
+    }
+
+    while (playbackElement.firstChild) {
+      playbackElement.removeChild(playbackElement.firstChild)
+    }
   }
 
   static styleize (it, styles) {
