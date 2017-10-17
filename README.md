@@ -1,16 +1,16 @@
 # Readerly
 
-as requested by freenode@vitx
-
 the plugin itself is in `/distribution/`
 
 ## Current tasks
 
 - Add support for the keyboard shortcuts.
 - Make clicking the progress bar and jumping to a specific point possible.
-- Code refactoring is being done in `source/`
-- Remove transparency.
-- Increase text font.
+- Make the extension pause (and unpause) when the word area is clicked.
+- Center all elements properly (buttons/words).
+- Make rewind button work.
+- Make delays from settings work (they don't seem to now).
+- Color the center character red (optimal recognition point).
 
 ## Completed tasks
 
