@@ -12,9 +12,12 @@ function $sendMessage(id = null, message) {
   Object.assign(packet, message)
   Object.assign(packet, { time })
 
+
   if (id) {
     Object.assign(packet, { id })
   }
+
+  console.log(packet)
 
   try {
     chrome.runtime.sendMessage(packet)

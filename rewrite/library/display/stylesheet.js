@@ -26,7 +26,7 @@ export default {
 
   'section.display': {
     display: 'grid',
-    height: '64px',
+    height: '80px',
 
     justifyItems: 'center',
     alignItems: 'center',
@@ -68,19 +68,33 @@ export default {
       content: '',
       color: transparent
     },
+
     'button.speed': {
+      gridRowStart: '2',
+      gridRowEnd: 'span 1',
       gridColumnStart: '3',
       gridColumnEnd: 'span 1',
+
       backgroundImage: url('images/rewind.png'),
       backgroundSize: '32px 32px',
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'center',
+
       minWidth: '36px',
       width: `${36 + 16 * 2}px`,
+
       content: '',
+
       color: transparent
     },
-    'button.close': {},
+
+    'button.close': {
+      gridRowStart: '2',
+      gridRowEnd: 'span 1',
+      gridColumnStart: '5',
+      gridColumnEnd: 'span 1'
+    },
+
     'div.playback': {
       justifySelf: 'stretch',
       height: '36px',
