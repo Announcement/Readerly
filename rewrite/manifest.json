@@ -22,10 +22,32 @@
     "images/*"
   ],
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "<all_urls>"
   ],
   "browser_action": {
     "default_icon": "icon128.png",
     "default_title": "Readerly Rewrite"
-  }
+  },
+  "commands": {
+    "read_selection": {
+      "suggested_key": { "default": "Ctrl+Shift+Z" },
+      "description": "Read Selection"
+    },
+    "graphical_selection": {
+      "suggested_key": { "default": "Ctrl+X" },
+      "description": "Graphical Selection"
+    },
+    "halve_speed": {
+      "suggested_key": { "default": "Ctrl+Q" },
+      "description": "Halve reader speed"
+    },
+    "_execute_browser_action": {
+      "suggested_key": {
+        "default": "Ctrl+Z",
+        "mac": "MacCtrl+Z"
+      }
+    }
+  },
+  "offline_enabled": true
 }

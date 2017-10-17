@@ -27,16 +27,32 @@ function onMessage(request, sender, sendResponse) {
 
   onMessageCache = request.time
 
-  onClicked()
+  console.log(request)
 
-  function onClicked() {
-    let playback
+  browserAction()
+  commands()
 
-    if (request.message === 'browserAction:onClicked') {
-      // display.open()
-      // display.focus()
-      // display.stream(everything)
-      display.toggle(everything)
+  function browserAction () {
+    if (request.message.indexOf('browserAction') === 0) {
+      onClicked()
+    }
+
+    function onClicked () {
+      if (request.message === 'browserAction:onClicked') {
+        display.toggle(everything)
+      }
+    }
+  }
+
+  function commands () {
+    if (request.message.indexOf('commands') === 0) {
+      onCommand()
+    }
+
+    function onCommand () {
+      if (request.message === 'commands:onCommand') {
+        console.log(request.message, request.name)
+      }
     }
   }
 }

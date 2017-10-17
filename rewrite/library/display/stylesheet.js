@@ -8,26 +8,33 @@ import url from '../utilities/css/url'
 
 export default {
   position: 'fixed',
+
   top: '0',
   left: '0',
 
   width: '100%',
-  height: '80px',
+  // minHeight: '80px',
 
   background: white,
   boxShadow: shadow('2dp'),
 
-  display: 'grid',
-  gridTemplateRows: '64px 1fr',
-  gridTemplateColumns: '1fr',
+  display: 'flex',
+  flexDirection: 'column',
+
+  // alignItems: 'center',
+  justifyContent: 'center',
 
   'section.display': {
     display: 'grid',
+    height: '64px',
+
     justifyItems: 'center',
     alignItems: 'center',
-    gridTemplateRows: '4px 60px',
+
+    gridTemplateRows: '4px 1fr',
     gridTemplateColumns: '24px min-content min-content 1fr min-content 24px',
     gridColumnGap: '8px',
+
     progress: {
       gridColumnStart: '1',
       gridColumnEnd: 'span 6',
@@ -36,6 +43,7 @@ export default {
       WebkitAppearance: 'none',
       background: white
     },
+
     button: {
       height: '36px',
       borderRadius: '2px',

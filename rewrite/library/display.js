@@ -42,6 +42,10 @@ class Display {
     element
       .querySelector('button.close')
       .addEventListener('click', () => this._close())
+
+    element
+      .querySelector('progress')
+      .addEventListener('click', it => this._progress(it))
   }
 
   _settings() {
@@ -53,9 +57,25 @@ class Display {
   }
 
   _speed() {}
+
   _close() {
     this.blur()
     this.close()
+  }
+
+  _progress (e) {
+    let progress
+    let percent
+
+    progress = this.element.querySelector('progress')
+    // console.log(progress.clientX, progress.clientWidth, e.clientX)
+    percent = e.clientX / progress.clientWidth
+    progress.setAttribute('value', parseInt(progress.getAttribute('min'), 10) * percent)
+
+
+    // console.log(percent)
+    ''// console.log(this.element)
+    // console.log(e.x, e.y, progress.clientX, progress.clientWidth - prog)
   }
 
   toggle (it) {
@@ -65,7 +85,7 @@ class Display {
     } else {
       this.open()
       this.focus()
-      
+
       if (it) this.stream(it)
     }
   }
@@ -91,7 +111,6 @@ class Display {
     let span
     let text
 
-    let value
     let maximum
 
     playbackElement = this.element.querySelector('.playback')
@@ -101,14 +120,15 @@ class Display {
 
     words = content.text.split(/\s+/g)
     maximum = words.length
-    value = 0
 
     progressElement.setAttribute('max', maximum)
-    progressElement.setAttribute('value', value)
 
     read = () => {
       let span
       let text
+      let value
+
+      value = parseInt(progressElement.getAttribute('value'), 10)
 
       while (playbackElement.firstChild) {
         playbackElement.removeChild(playbackElement.firstChild)

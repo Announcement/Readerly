@@ -2,14 +2,19 @@ let $browser
 
 $browser = chrome || browser
 
-function $sendMessage(id, message) {
+function $sendMessage(id = null, message) {
   let packet
   let time
 
   packet = {}
   time = Date.now()
 
-  Object.assign(packet, message, { time, id })
+  Object.assign(packet, message)
+  Object.assign(packet, { time })
+
+  if (id) {
+    Object.assign(packet, { id })
+  }
 
   try {
     chrome.runtime.sendMessage(packet)
@@ -25,26 +30,36 @@ function $sendMessage(id, message) {
     console.warn('Could not sendMessage using browser.runtime', exception)
   }
 
-  try {
-    chrome.tabs.sendMessage(id, packet)
-    console.debug('using chrome.tabs.sendMessage')
-  } catch (exception) {
-    console.warn('Could not sendMessage using chrome.tabs', exception)
-  }
+  if (id) {
+    try {
+      chrome.tabs.sendMessage(id, packet)
+      console.debug('using chrome.tabs.sendMessage')
+    } catch (exception) {
+      console.warn('Could not sendMessage using chrome.tabs', exception)
+    }
 
-  try {
-    console.debug('using browser.tabs.sendMessage')
-    browser.tabs.sendMessage(id, packet)
-  } catch (exception) {
-    console.warn('Could not sendMessage using browser.tabs', exception)
+    try {
+      console.debug('using browser.tabs.sendMessage')
+      browser.tabs.sendMessage(id, packet)
+    } catch (exception) {
+      console.warn('Could not sendMessage using browser.tabs', exception)
+    }
   }
 }
 
-if (!$browser.browserAction.onClicked.hasListener(listener)) {
-  $browser.browserAction.onClicked.addListener(listener)
+if (!$browser.browserAction.onClicked.hasListener(click)) {
+  $browser.browserAction.onClicked.addListener(click)
 }
 
-function listener(tab) {
+if (!$browser.commands.onCommand.hasListener(command)) {
+  $browser.commands.onCommand.addListener(command)
+}
+
+$browser.commands.getAll(it => {
+  console.log(it)
+})
+
+function click (tab) {
   let message
 
   message = 'browserAction:onClicked'
@@ -52,5 +67,16 @@ function listener(tab) {
   $sendMessage(tab.id, {
     tab,
     message
+  })
+}
+
+function command (name) {
+  let message
+
+  message = 'commands:onCommand'
+
+  $sendMessage({
+    message,
+    name
   })
 }
