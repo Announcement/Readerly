@@ -16,8 +16,6 @@ class Parasite {
     blacklist = []
     blacklist.push('script')
     blacklist.push('style')
-    blacklist.push('pre')
-    blacklist.push('code')
     blacklist.push('template')
 
     if (blacklist.indexOf(it.tagName.toLowerCase()) !== -1) {
