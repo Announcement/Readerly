@@ -33,9 +33,8 @@ class Playback {
   }
 
   configure (it) {
-// console.debug('playback is being configured', it)
-
-    Object.assign(this.configuration, it)
+    console.debug('playback is being configured', it)
+    // Object.assign(this.configuration, it)
   }
 
   full () {
@@ -108,15 +107,13 @@ class Playback {
 
     outputElement = this.element.querySelector('div.text')
 
-    forEachSentence(sentences)
-
     show = (sentenceIndex, wordIndex) => {
       let configuration
       let timeout
 
-      timeout = 1000 * 60 / configuration.wordsPerMinute
-
       configuration = this.configuration
+
+      timeout = 1000 * 60 / configuration.wordsPerMinute
 
       return new Promise(function (resolve, reject) {
         let sentence
@@ -164,6 +161,8 @@ class Playback {
 
       return true
     }
+
+    forEachSentence(sentences)
 
     function removeChildren (element) {
       while (element.firstChild) {

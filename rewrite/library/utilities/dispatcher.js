@@ -123,7 +123,7 @@ class Dispatcher {
     // listener = _listener[eventName]
 
     console.debug(this.constructor.name,
-      'dispatcher:dispatch', 'eventName', eventName)
+      'Dispatcher:dispatch', 'eventName', eventName)
 
     this._ensure(eventName)
 

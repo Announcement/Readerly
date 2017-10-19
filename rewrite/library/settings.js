@@ -33,7 +33,7 @@ class Settings extends Dispatcher {
     let wordSettings
     let navigation
 
-// console.debug('settings:constructor')
+    // console.debug('settings:constructor')
 
     speedSettingsElement = it.querySelector('form.speed')
     wordSettingsElement = it.querySelector('form.word')
@@ -46,7 +46,7 @@ class Settings extends Dispatcher {
     this.element = it
     this.parent = parentElement
 
-// console.debug('settings:constructor', 'prepare to load')
+    // console.debug('settings:constructor', 'prepare to load')
 
     navigation = new Navigation(navigationElement)
     speedSettings = new SpeedSettings(speedSettingsElement)
@@ -59,17 +59,17 @@ class Settings extends Dispatcher {
     this.speed = speedSettings
     this.word = wordSettings
 
+    navigation.on('click', element => {
+      this._navigate(element)
+    })
 
-    this.navigation.on('click', element =>
-      this._navigate(element))
-
-    this.speed.on('change', () => {
-// console.debug('settings - speed on change')
+    speedSettings.on('change', () => {
+      console.debug('settings - speed on change')
       this.dispatch('change', this.configuration)
     })
 
-    this.word.on('change', () => {
-// console.debug('settings - word on change')
+    wordSettings.on('change', () => {
+      console.debug('settings - word on change')
       this.dispatch('change', this.configuration)
     })
 
@@ -112,17 +112,17 @@ class Settings extends Dispatcher {
   }
 
   toggle () {
-// console.debug('settings:toggle')
+  // console.debug('settings:toggle')
 
-// console.debug('settings:toggle', 'this.parent', this.parent)
-// console.debug('settings:toggle', 'this.element', this.element)
-// console.debug('settings:toggle', 'this.enabled', this.enabled)
+  // console.debug('settings:toggle', 'this.parent', this.parent)
+  // console.debug('settings:toggle', 'this.element', this.element)
+  // console.debug('settings:toggle', 'this.enabled', this.enabled)
 
     if (this.enabled === false) {
-// console.debug('settings:toggle', 'should call this.append()')
+      // console.debug('settings:toggle', 'should call this.append()')
       this.append()
     } else {
-// console.debug('settings:toggle', 'should call this.remove()')
+      // console.debug('settings:toggle', 'should call this.remove()')
       this.remove()
     }
 
@@ -197,9 +197,11 @@ class Settings extends Dispatcher {
     let speed
     let word
 
+    console.debug('navigate')
+
     reference = element.getAttribute('href')
 
-// console.debug('settings:_navigate', reference)
+    // console.debug('settings:_navigate', reference)
 
     speed = () => {
       if (reference === '#readerly-settings-speed') {

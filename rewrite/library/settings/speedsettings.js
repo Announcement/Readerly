@@ -58,7 +58,7 @@ class SpeedSettings extends SettingsPanel {
 
     that = this.element.querySelector('fieldset.words-per-minute')
 
-    element = !that ? this.createWordsPerMinute() : that
+    element = that || this.createWordsPerMinute()
     setting = new Setting(element)
 
     setting.sync()
@@ -73,7 +73,7 @@ class SpeedSettings extends SettingsPanel {
 
     that = this.element.querySelector('fieldset.sentence-end-delay')
 
-    element = !that ? this.createSentenceEndDelay() : that
+    element = that || this.createSentenceEndDelay()
     setting = new Setting(element)
 
     setting.sync()
@@ -88,7 +88,7 @@ class SpeedSettings extends SettingsPanel {
 
     that = this.element.querySelector('fieldset.punctuation-delay')
 
-    element = !that ? this.createPunctuationDelay() : that
+    element = that || this.createPunctuationDelay()
     setting = new Setting(element)
 
     setting.sync()
@@ -103,7 +103,7 @@ class SpeedSettings extends SettingsPanel {
 
     that = this.element.querySelector('fieldset.long-word-delay')
 
-    element = !that ? this.createLongWordDelay() : that
+    element = that || this.createLongWordDelay()
     setting = new Setting(element)
 
     setting.sync()
@@ -118,7 +118,7 @@ class SpeedSettings extends SettingsPanel {
 
     that = this.element.querySelector('fieldset.special-pattern-delay')
 
-    element = !that ? this.createSpecialPatternDelay() : that
+    element = that || this.createSpecialPatternDelay()
     setting = new Setting(element)
 
     setting.sync()

@@ -3,27 +3,30 @@ import Dispatcher from '../utilities/dispatcher'
 class Navigation extends Dispatcher {
   constructor (it) {
     let elements
-    let list
+    // let list
 
     super()
 
     this.element = it
 
-// console.debug('navigation:constructor', 'fetch elements')
+    // console.debug('navigation:constructor', 'fetch elements')
 
     elements = it.querySelectorAll('a')
 
-// console.debug('navigation:constructor', 'elements', elements)
+    // console.debug('navigation:constructor', 'elements', elements)
 
-    list = [...elements]
+    this.elements = elements
 
-// console.debug('navigation:constructor', 'list', list)
+    this.install()
+    // list = [...elements]
 
-    list.forEach(item => {
-// console.debug('navigation:constructor', 'list.forEach', 'item', item)
+    // console.debug('navigation:constructor', 'list', list)
 
-      item.addEventListener('click', () => this._click(item))
-    })
+    // list.forEach(item => {
+      // console.debug('navigation:constructor', 'list.forEach', 'item', item)
+
+      // item.addEventListener('click', () => this._click(item))
+    // })
 
     // let element
     //
@@ -33,8 +36,18 @@ class Navigation extends Dispatcher {
     // this.element = element
   }
 
-  _click (element) {
+  click (element) {
     this.dispatch('click', element)
+  }
+
+  install () {
+    let list
+
+    list = [...this.elements]
+
+    list.forEach(it => {
+      it.addEventListener('click', () => this.click(it))
+    })
   }
 }
 

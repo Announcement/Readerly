@@ -28,26 +28,57 @@ class Setting extends Dispatcher {
     let that
 
     that = this.element.querySelector('legend')
-    this.legend = !that ? this.createLegend() : that
+    this.legend = that || this.createLegend()
   }
 
   ensureNumber () {
     let that
 
     that = this.element.querySelector('input.number')
-    this.number = !that ? this.createNumber() : that
+    this.number = that || this.createNumber()
   }
 
   ensureRange () {
     let that
 
     that = this.element.querySelector('input.range')
-    this.range = !that ? this.createRange() : that
+    this.range = that || this.createRange()
   }
 
-  createLegend () {}
-  creatteNumber () {}
-  createRange () {}
+  createLegend () {
+    let $document
+    let element
+
+    $document = this.element.ownerDocument
+
+    element = $document.createElement('legend')
+
+    return element
+  }
+
+  createNumber () {
+    let $document
+    let element
+
+    $document = this.element.ownerDocument
+
+    element = $document.createElement('input')
+    element.setAttribute('type', 'number')
+
+    return element
+  }
+
+  createRange () {
+    let $document
+    let element
+
+    $document = this.element.ownerDocument
+
+    element = $document.createElement('input')
+    element.setAttribute('type', 'range')
+
+    return element
+  }
 
   // constructor (label) {
   //   let fieldset

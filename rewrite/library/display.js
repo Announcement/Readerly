@@ -1,27 +1,9 @@
 import Settings from './settings'
 import Playback from './playback'
-
-import body from './display/body'
-import head from './display/head'
-
 import address from './utilities/address'
-// import exists from './utilities/exists'
-
 import zIndex from './utilities/css/z-index'
-
-// let $browser = chrome || browser
-//
-// function url (it) {
-//   if (typeof browser === 'undefined') {
-//     return chrome.runtime.getURL(it)
-//   } else {
-//     return browser.extension.getURL(it)
-//   }
-// }
-
-// function number (it) {
-//   return parseInt(it, 10)
-// }
+import Request from './utilities/request'
+import rebase from './utilities/rebase'
 
 class Display {
   /**
@@ -31,70 +13,69 @@ class Display {
    * @see {@link stylize}
    */
   constructor () {
-    // let settingsElement
-    // let playbackElement
     let element
-
-    // let settings
-    // let playback
+    let chrome
+    let firefox
 
     this.filter = new WeakMap()
     this.zIndex = new WeakMap()
 
-    // this.destroy(document.querySelector('iframe#readerly'))
-
-    // element = document.createElement('object')
     element = document.createElement('iframe')
-
-    // element.setAttribute('src', 'about:blank')
-    // element.setAttribute('type', 'text/html')
-    // element.setAttribute('data', address('display.html'))
-
-    element.setAttribute('src', address('display.html'))
-    element.addEventListener('load', () => this._load())
-
-    // element.setAttribute('sandbox', 'allow-same-origin')
-    // element.setAttribute('referrerpolicy', 'unsafe-url allow-same-origin')
 
     element.id = 'readerly'
 
     this.element = element
     this.initialized = false
 
-    // console.debug(element.contentDocument)
-    // console.debug(element.contentWindow.document)
+    /**
+     * load display.html to the iframe with ajax.
+     * @method chrome
+     */
+    chrome = () => {
+      element.setAttribute('src', 'about:blank')
+      element.addEventListener('load', () => this._chrome())
+    }
 
-    // this.settings = new Settings()
-    // this.playback = new Playback()
+    /**
+     * Load display.html to the iframe automatically.
+     * @method firefox
+     */
+    firefox = () => {
+      element.setAttribute('src', address('display.html'))
+      element.addEventListener('load', () => this._firefox())
+    }
+
+    typeof browser === 'undefined' ? chrome() : firefox()
+
+    document.body.appendChild(element)
 
     Display.stylize(this.element)
   }
 
-  // destroy (it) {
-  //   if (exists(it)) {
-  //     it.parentNode.removeChild(it)
-  //   }
-  //
-  //   if (exists(this.element) && exists(this.element.parentNode)) {
-  //     this.element.parentNode.removeChild(this.element)
-  //   }
-  // }
-
-  listen () {
+  async _chrome () {
     let $window
     let $document
 
-    $window = this.element.contentWindow
-    $document = this.element.contentDocument
+    let remote
+    let element
 
-// console.debug('display:listen')
+    element = this.element
 
-    $document.head.appendChild(head())
-    $document.body.appendChild(body())
+    $window = element.contentWindow
+    $document = element.contentDocument || $window.document
 
-// console.log($document.readyState)
-// console.log($window, $document)
-// console.log($document)
+    remote = await Request.preload(address('display.html'))
+
+    rebase(remote)
+
+    $document.head.outerHTML = remote.head.outerHTML
+    $document.body.outerHTML = remote.body.outerHTML
+
+    this._load()
+  }
+
+  async _firefox () {
+    this._load()
   }
 
   /**
@@ -127,7 +108,7 @@ class Display {
     $window = element.contentWindow
     $document = element.contentDocument
 
-// console.debug('display:_load')
+    // console.debug('display:_load')
 
     $window.addEventListener('resize', () => this.resize())
     $window.requestAnimationFrame(() => this.resize())
@@ -140,41 +121,39 @@ class Display {
     playback = new Playback(playbackElement)
     settings = new Settings(settingsElement)
 
-
     this.playback = playback
     this.settings = settings
 
     settings.on('change', () => {
-// console.debug('display - settings on change')
+      console.debug('display - settings on change')
       // playback.configure(configuration)
     })
 
     onAppend = () => {
-// console.debug('display:_load', 'onAppend()')
-
+      // console.debug('display:_load', 'onAppend()')
       this.resize()
     }
 
     onRemove = () => {
-// console.debug('display:_load', 'onRemove()')
+      // console.debug('display:_load', 'onRemove()')
 
       this.resize()
     }
 
     onShow = () => {
-// console.debug('display:_load', 'onShow()')
+      // console.debug('display:_load', 'onShow()')
 
       this.resize()
     }
 
     onToggle = () => {
-// console.debug('display:_load', 'onToggle()')
+      // console.debug('display:_load', 'onToggle()')
 
       this.resize()
     }
 
     onCollapse = () => {
-// console.debug('display:_load', 'onCollapse()')
+      // console.debug('display:_load', 'onCollapse()')
 
       this.resize()
     }
@@ -189,10 +168,62 @@ class Display {
       .addEventListener('click', () => this._settings())
 
     playback.full()
+
+    // function ensurePlaybackElement () {
+    //   let that
+    //   let element
+    //   let display
+    //
+    //   that = $document.querySelector('section.playback')
+    //   element = that || createPlaybackElement()
+    //   display = new Playback(element)
+    //
+    //   // playbackElement = element
+    //   playback = display
+    // }
+    //
+    // function ensureSettingsElement () {
+    //   let that
+    //   let element
+    //   let display
+    //
+    //   that = $document.querySelector('section.settings')
+    //   element = that || createSettingsElement()
+    //   display = new Settings(element)
+    //
+    //   // settingsElement = element
+    //   settings = display
+    // }
+    //
+    // function createPlaybackElement () {
+    //   let element
+    //
+    //   element = $document.createElement('section')
+    //
+    //   element.classList.add('readerly')
+    //   element.classList.add('playback')
+    //
+    //   document.body.appendChild(element)
+    //
+    //   return element
+    // }
+    //
+    // function createSettingsElement () {
+    //   // let element
+    //
+    //   element = $document.createElement('section')
+    //
+    //   element.classList.add('readerly')
+    //   element.classList.add('settings')
+    //
+    //   document.body.appendChild(element)
+    //
+    //   return element
+    // }
   }
 
   _ready ($document, $window) {
-// console.log('loaded')
+    // console.log('loaded')
 
     // let settingsButton
     // let speedButton
@@ -217,24 +248,24 @@ class Display {
   }
 
   _settings () {
-// console.debug('display:_settings')
+    // console.debug('display:_settings')
     this.settings.toggle()
     this.resize()
   }
 
   _speed () {
-// console.debug('display:_speed')
+    // console.debug('display:_speed')
   }
 
   _close () {
-// console.debug('display:_close')
+    // console.debug('display:_close')
     this.disable()
   }
 
   _progress (e) {
     // let progress
     // let percent
-// console.debug('display:_progress')
+    // console.debug('display:_progress')
 
     // progress = this.element.querySelector('progress')
     // console.log(progress.clientX, progress.clientWidth, e.clientX)
@@ -260,11 +291,13 @@ class Display {
     $window = element.contentWindow
     $document = element.contentDocument
 
-// console.debug('display:resize')
+    console.debug('display:resize')
 
     style = $window.getComputedStyle($document.body)
 
     element.style.height = style.getPropertyValue('height')
+
+    console.debug(element.style.height, )
 
     this.refresh()
   }
@@ -280,19 +313,19 @@ class Display {
   }
 
   toggle (it) {
-// console.debug('display:toggle')
+    // console.debug('display:toggle')
 
     return !this.enabled ? this.enable(it) : this.disable(it)
   }
 
   get enabled () {
-// console.debug('display:enabled')
+    // console.debug('display:enabled')
 
     return document.body.contains(this.element)
   }
 
   enable (it) {
-// console.debug('display:enable')
+    // console.debug('display:enable')
 
     // if (it) this.stream(it)
 
@@ -301,39 +334,39 @@ class Display {
   }
 
   disable () {
-// console.debug('display:disable')
+    // console.debug('display:disable')
 
     this.blur()
     this.close()
   }
 
   close () {
-// console.debug('display:close')
+    // console.debug('display:close')
 
     this.remove()
     this.stop()
   }
 
   remove () {
-// console.debug('display:remove')
+    // console.debug('display:remove')
 
     document.body.removeChild(this.element)
   }
 
   append () {
-// console.debug('display:append')
+    // console.debug('display:append')
 
     document.body.appendChild(this.element)
   }
 
   stop () {
-// console.debug('display:stop')
+    // console.debug('display:stop')
 
     this.timeout && clearTimeout(this.timeout)
   }
 
   initialize () {
-// console.debug('display:initialize')
+    // console.debug('display:initialize')
 
     // if (!this.initialized) {
     //   this.listen()
@@ -343,7 +376,7 @@ class Display {
   }
 
   open (playback) {
-// console.debug('display:open')
+    // console.debug('display:open')
 
     this.append()
     // this.initialize()
@@ -410,7 +443,7 @@ class Display {
   }
 
   static stylize (it) {
-// console.debug('Display:stylize')
+    // console.debug('Display:stylize')
 
     it.style.position = 'fixed'
     it.style.top = '0'
@@ -427,10 +460,10 @@ class Display {
   }
 
   focus () {
-// console.debug('display:focus')
+    // console.debug('display:focus')
 
     document.querySelectorAll('body > *').forEach(it => {
-// console.debug('display:focus', 'querySelectorAll forEach')
+      // console.debug('display:focus', 'querySelectorAll forEach')
 
       if (it !== this.element) {
         this.filter.set(it, it.style.filter)
@@ -442,10 +475,10 @@ class Display {
   }
 
   blur () {
-// console.debug('display:blur')
+    // console.debug('display:blur')
 
     document.querySelectorAll('body > *').forEach(it => {
-// console.debug('display:blur', 'querySelectorAll', 'forEach')
+      // console.debug('display:blur', 'querySelectorAll', 'forEach')
 
       if (this.filter.has(it)) {
         it.style.filter = this.filter.get(it)

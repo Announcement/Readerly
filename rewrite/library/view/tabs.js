@@ -1,13 +1,13 @@
 import Navigation from './navigation'
 
 class Tabs extends Navigation {
-  constructor() {
+  constructor () {
     super()
 
     this.element.classList.add('tabs')
   }
 
-  add(tab) {
+  add (tab) {
     this.element.appendChild(tab.element)
   }
 }
