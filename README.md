@@ -4,6 +4,10 @@ the plugin itself is in `/distribution/`
 
 ## Current tasks
 
+- Make the buttons and text be in the center of the panel (excluding the progress bar).
+- Make the text display (+ sort out the first word missing issue).
+- Set the minimum height to iframe like it was in the old version to take care of an error.
+- Fix the issue of buttons being colored according to current site colours.
 - Add support for the keyboard shortcuts.  [enabled in manifest]
 - Make clicking the progress bar and jumping to a specific point possible.
 <<<<<<< Updated upstream
