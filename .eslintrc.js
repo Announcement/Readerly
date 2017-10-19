@@ -27,7 +27,7 @@ module.exports = {
     'global-require': 'error',
     'no-duplicate-imports': ['error', {'includeExports': true}],
     'max-depth': ['warn', 3],
-    'max-len': ['error', { code: 80, ignoreComments: true }],
+    'max-len': ['error', { code: 80, ignoreComments: true, ignoreRegExpLiterals: true }],
     'max-nested-callbacks': ['error', { max: 3 }],
     'max-params': ['warn', { max: 3 }],
     'no-duplicate-imports': 'off',

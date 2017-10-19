@@ -1,36 +1,29 @@
 import Display from './library/display'
-import Playback from './library/playback'
+
+import getBrowser from './library/utilities/get-browser'
+import exists from './library/utilities/exists'
 
 let $browser
 
 let display
 let everything
 
-let onMessageCache
-let queue
+main()
 
-$browser = chrome || browser
-queue = []
+// $browser = getBrowser()
 
 // $browser.runtime.onMessage.addListener(message)
 
 // document.addEventListener('DOMContentLoaded', function () {
 // })
 
-display = new Display()
-everything = new Playback(document.body.outerHTML)
+// display = new Display()
+// everything = new Playback(document.body.outerHTML)
 
-function onMessage(request, sender, sendResponse) {
-  if (onMessageCache === request.time) {
-    return false
-  }
-
-  onMessageCache = request.time
-
-  console.log(request)
-
+function onMessage (request, sender, sendResponse) {
   browserAction()
   commands()
+  runtime()
 
   function browserAction () {
     if (request.message.indexOf('browserAction') === 0) {
@@ -39,6 +32,8 @@ function onMessage(request, sender, sendResponse) {
 
     function onClicked () {
       if (request.message === 'browserAction:onClicked') {
+        // console.debug(request.message, request.tab)
+
         display.toggle(everything)
       }
     }
@@ -51,42 +46,99 @@ function onMessage(request, sender, sendResponse) {
 
     function onCommand () {
       if (request.message === 'commands:onCommand') {
-        console.log(request.message, request.name)
+        // console.debug(request.message, request.name)
+      }
+    }
+  }
+
+  function runtime () {
+    if (request.message.indexOf('runtime') === 0) {
+      onUpdateAvailable()
+      onSuspend()
+    }
+
+    function onUpdateAvailable () {
+      if (request.message === 'runtime:onUpdateAvailable') {
+        // console.debug(request.message, request.details)
+      }
+    }
+
+    function onSuspend () {
+      if (request.message === 'runtime:onSuspend') {
+        // console.debug(request.message)
       }
     }
   }
 }
 
-try {
-  $browser.runtime.onMessage.addListener(function(
-    request,
-    sender,
-    sendResponse
-  ) {
-    if (onMessageCache === request.time) {
-      return false
+function listen () {
+  let onMessageCache
+
+  runtime()
+  extension()
+
+  function runtime () {
+    let source
+
+    source= $browser.runtime
+
+    onMessage()
+
+    function onMessage () {
+      let $event
+
+      $event = source.onMessage
+
+      if (exists($event) && !$event.hasListener(listener)) {
+        $event.addListener(listener)
+      }
     }
-    console.debug('runtime message', request, sender)
-    onMessage(request, sender, sendResponse)
-  })
-  console.debug('Listening to runtime messages :)')
-} catch (e) {
-  console.debug('Failed to read extension messages')
+  }
+
+  function extension () {
+    let source
+
+    source = $browser.extension
+
+    onMessage()
+
+    function onMessage () {
+      let $event
+
+      $event = source.onMessage
+
+      if ($event && !$event.hasListener(listener)) {
+        $event.addListener(listener)
+      }
+    }
+  }
+
+  function listener (request, sender, sendResponse) {
+    let testListener = () => {
+      console.debug('listen', 'listener')
+
+      return !exists(onMessageCache) || onMessageCache !== request.time
+    }
+
+    if (testListener()) {
+      onMessageCache = request.time
+
+      onMessage(request, sender, sendResponse)
+    }
+  }
 }
 
-try {
-  $browser.extension.onMessage.addListener(function(
-    request,
-    sender,
-    sendResponse
-  ) {
-    if (onMessageCache === request.time) {
-      return false
-    }
-    console.debug('extension message', request, sender)
-    onMessage(request, sender, sendResponse)
-  })
-  console.debug('Listening to extension messages :)')
-} catch (e) {
-  console.debug('Failed to read extension messages')
+function main () {
+  let readerly
+
+  $browser = getBrowser()
+
+  if (document.querySelector('#readerly')) {
+    readerly = document.querySelector('#readerly')
+    readerly.parentNode.removeChild(readerly)
+  }
+
+  display = new Display()
+
+  listen()
 }
