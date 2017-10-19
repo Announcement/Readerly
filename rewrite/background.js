@@ -1,71 +1,178 @@
 let $browser
 
-$browser = chrome || browser
+$browser = getBrowser()
 
-function $sendMessage(id = null, message) {
-  let packet
+main()
+
+/** @see {@link utilities/get-browser} */
+function getBrowser () {
+  let $browser
+
+  _chrome()
+  _browser()
+
+  function _chrome () {
+    if (typeof browser === 'undefined') {
+      $browser = chrome// console.debug('Browser detected as Chrome.')
+    }
+  }
+
+  function _browser () {
+    if (typeof browser !== 'undefined') {
+      $browser = browser// console.debug('Browser detected as Firefox.')
+    }
+  }
+
+  return $browser
+}
+
+/** @see {@link utilities/exists} */
+function exists (it) {
+  return it !== undefined && it !== null
+}
+
+function $sendMessage (id = null, message) {
   let time
 
-  packet = {}
   time = Date.now()
 
-  Object.assign(packet, message)
-  Object.assign(packet, { time })
+  testRuntime()
+  testTabs()
 
+  function testRuntime () {
+    let packet
 
-  if (id) {
+    packet = {}
+
+    Object.assign(packet, message)
+    Object.assign(packet, { time })
+
+    if ($browser.runtime) {// console.debug('Runtime API is available.')
+
+      debugRuntime(packet)
+    }
+  }
+
+  function debugRuntime (packet) {
+    let promise
+
+    try {
+      promise = $browser.runtime.sendMessage(packet)
+    } catch (exception) {// console.debug('runtime.sendMessage is not available.', {exception})
+    }
+
+    invokePromise(promise)
+  }
+
+  function testTabs () {
+    let packet
+
+    packet = {}
+
+    Object.assign(packet, message)
+    Object.assign(packet, { time })
     Object.assign(packet, { id })
-  }
 
-  console.log(packet)
+    if ($browser.tabs && id) {// console.debug('Tabs API is available.')
 
-  try {
-    chrome.runtime.sendMessage(packet)
-    console.debug('using chrome.runtime.sendMessage')
-  } catch (exception) {
-    console.warn('Could not sendMessage using chrome.runtime', exception)
-  }
-
-  try {
-    console.debug('using browser.runtime.sendMessage')
-    browser.runtime.sendMessage(packet)
-  } catch (exception) {
-    console.warn('Could not sendMessage using browser.runtime', exception)
-  }
-
-  if (id) {
-    try {
-      chrome.tabs.sendMessage(id, packet)
-      console.debug('using chrome.tabs.sendMessage')
-    } catch (exception) {
-      console.warn('Could not sendMessage using chrome.tabs', exception)
-    }
-
-    try {
-      console.debug('using browser.tabs.sendMessage')
-      browser.tabs.sendMessage(id, packet)
-    } catch (exception) {
-      console.warn('Could not sendMessage using browser.tabs', exception)
+      debugTabs(id, packet)
     }
   }
+
+  function debugTabs (id, packet) {
+    let promise
+
+    try {
+      promise = $browser.tabs.sendMessage(id, packet)
+    } catch (exception) {// console.debug('tabs.sendMessage is not available.', {exception})
+    }
+
+    invokePromise(promise)
+  }
+
+  function invokePromise (promise) {
+    if (promise) {
+      promise.then(resolvePromise).catch(repairPromise)
+    }
+  }
+
+  function resolvePromise (message) {
+    // console.debug('$sendMessage', 'resolvePromise', 'message', message)
+  }
+
+  function repairPromise (error) {
+    // console.debug('$sendMessage', 'resolvePromise', 'error', error)
+  }
 }
 
-if (!$browser.browserAction.onClicked.hasListener(click)) {
-  $browser.browserAction.onClicked.addListener(click)
+function initialize () {
+  browserAction()
+  commands()
+  runtime()
+
+  function browserAction () {
+    let api
+
+    api = $browser.browserAction
+
+    onClicked()
+
+    function onClicked () {
+      if (!api.onClicked.hasListener(click)) {
+        api.onClicked.addListener(click)
+      }
+    }
+  }
+
+  function commands () {
+    let api
+
+    api = $browser.commands
+
+    getAll()
+    onCommand()
+
+    function getAll () {
+      api.getAll(it => console.log('commands', it))
+    }
+
+    function onCommand () {
+      if (!api.onCommand.hasListener(command)) {
+        api.onCommand.addListener(command)
+      }
+    }
+  }
+
+  function runtime () {
+    let api
+
+    api = $browser.runtime
+
+    onUpdateAvailable()
+    onSuspend()
+
+    function onUpdateAvailable () {
+      if (!api.onUpdateAvailable.hasListener(update)) {
+        api.onUpdateAvailable.addListener(update)
+      }
+    }
+
+    function onSuspend () {
+      if (exists(api.onSuspend) && !api.onSuspend.hasListener(suspend)) {
+        api.onSuspend.addListener(suspend)
+      }
+    }
+  }
 }
 
-if (!$browser.commands.onCommand.hasListener(command)) {
-  $browser.commands.onCommand.addListener(command)
+function main () {
+  initialize()
 }
-
-$browser.commands.getAll(it => {
-  console.log(it)
-})
 
 function click (tab) {
   let message
 
-  message = 'browserAction:onClicked'
+  message = 'browserAction:onClicked'// console.debug(message)
 
   $sendMessage(tab.id, {
     tab,
@@ -76,10 +183,31 @@ function click (tab) {
 function command (name) {
   let message
 
-  message = 'commands:onCommand'
+  message = 'commands:onCommand'// console.debug(message)
 
   $sendMessage({
     message,
     name
+  })
+}
+
+function update (details) {
+  let message
+
+  message = 'runtime:onUpdateAvailable'// console.debug(message)
+
+  $sendMessage({
+    message,
+    details
+  })
+}
+
+function suspend () {
+  let message
+
+  message = 'runtime:onSuspend'// console.debug(message)
+
+  $sendMessage({
+    message
   })
 }

@@ -2,22 +2,65 @@ import SettingsPanel from './settingspanel'
 import Setting from './setting'
 
 class WordSettings extends SettingsPanel {
-  constructor() {
-    let maxLettersShown
+  constructor (it) {
+// console.debug('WordSettings')
 
-    super('Word Settings')
+    super(it)
 
-    maxLettersShown = new Setting('Max Letters Shown')
+    this.ensureMaxLettersShown()
 
-    maxLettersShown.step = 1
-    maxLettersShown.minimum = 1
-    maxLettersShown.maximum = 25
-    maxLettersShown.value = 12
-
-    maxLettersShown.sync()
-
-    this.add(maxLettersShown)
+    this.listen()
+    // let maxLettersShown
+    //
+    // super('Word Settings')
+    //
+    // maxLettersShown = new Setting('Max Letters Shown')
+    //
+    // maxLettersShown.step = 1
+    // maxLettersShown.minimum = 1
+    // maxLettersShown.maximum = 25
+    // maxLettersShown.value = 12
+    //
+    // maxLettersShown.sync()
+    //
+    // this.add(maxLettersShown)
   }
+
+
+  listen () {
+    this.maxLettersShown.on('change', () => this.update())
+  }
+
+  update () {
+    this.dispatch('change', this.configuration)
+  }
+
+  get configuration () {
+    let configuration
+
+    configuration = {}
+
+    configuration.maxLettersShown = this.maxLettersShown.value
+
+    return configuration
+  }
+
+  ensureMaxLettersShown () {
+    let that
+    let element
+    let setting
+
+    that = this.element.querySelector('fieldset.max-letters-shown')
+
+    element = !that ? this.createMaxLettersShown() : that
+    setting = new Setting(element)
+
+    setting.sync()
+
+    this.maxLettersShown = setting
+  }
+
+  createMaxLettersShown () {}
 }
 
 export default WordSettings

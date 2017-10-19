@@ -19,7 +19,9 @@
   ],
   "web_accessible_resources": [
     "fonts/*",
-    "images/*"
+    "images/*",
+    "style/*",
+    "*.html"
   ],
   "permissions": [
     "activeTab",
@@ -48,6 +50,5 @@
         "mac": "MacCtrl+Z"
       }
     }
-  },
-  "offline_enabled": true
+  }
 }

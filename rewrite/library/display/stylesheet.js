@@ -5,6 +5,54 @@ import { white, transparent } from '../utilities/css/colors'
 
 import shadow from '../utilities/css/shadow'
 import url from '../utilities/css/url'
+// function styleize(it, styles) {
+//   if (!it) return false
+//
+//   let stylesheetElement
+//   let stylesheetNode
+//
+//   // console.debug('styleize')
+//
+//   stylesheetElement = document.createElement('style')
+//
+//   document.head.appendChild(stylesheetElement)
+//
+//   stylesheetNode = document.styleSheets[document.styleSheets.length - 1]
+//
+//   this.stylesheet = stylesheetNode
+//
+//
+//   // console.debug('Read virtual stylesheet')
+//
+//   Object.keys(styles).forEach(key => {
+//     let value
+//
+//     value = styles[key]
+//
+//     if (value.constructor === Array) {
+//       value = value.join(' ')
+//     }
+//
+//     // console.debug(styles, key)
+//
+//     assign(key, value)
+//     find(key, value)
+//   })
+//
+//   function assign(key, value) {
+//     key = key.replace(/([A-Z])/g, it => '-' + it.toLowerCase())
+//
+//     if (typeof value === 'string') {
+//       it.style[key] = value
+//     }
+//   }
+//
+//   function find(key, value) {
+//     if (typeof value === 'object') {
+//       it.querySelectorAll(key).forEach(it => Display.styleize(it, value))
+//     }
+//   }
+// }
 
 export default {
   position: 'fixed',

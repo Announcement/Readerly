@@ -1,13 +1,5 @@
-function _url(it) {
-  if (typeof browser === 'undefined') {
-    return chrome.runtime.getURL(it)
-  } else {
-    return browser.extension.getURL(it)
-  }
-}
+import address from '../address'
 
-function url(it) {
-  return `url("${_url(it)}")`
+export default function url(it) {
+  return `url("${address(it)}")`
 }
-
-export default url
