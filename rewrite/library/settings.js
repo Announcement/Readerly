@@ -1,3 +1,8 @@
 import * as data from './utilities/storage'
 
-class Settings {}
+// Speeds
+// Words
+
+class Settings {
+  constructor () {}
+}
