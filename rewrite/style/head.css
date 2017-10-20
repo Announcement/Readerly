@@ -32,6 +32,8 @@
 html, body
 {
   height: min-content;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 progress::-webkit-progress-bar {
