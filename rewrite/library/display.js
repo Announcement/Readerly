@@ -46,8 +46,6 @@ class Display {
     }
 
     typeof browser === 'undefined' ? chrome() : firefox()
-
-    Display.stylize(this.element)
   }
 
   async _chrome () {
@@ -101,6 +99,8 @@ class Display {
     // let onShow
     // let onToggle
     // let onCollapse
+
+    Display.stylize(this.element)
 
     element = this.element
 
