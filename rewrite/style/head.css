@@ -4,6 +4,31 @@
   padding: 0;
 }
 
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+
 html, body
 {
   height: min-content;
@@ -79,7 +104,9 @@ section.playback button {
 }
 
 section.playback button.settings,
-section.playback button.speed {
+section.playback button.speed
+/*section.playback button.close*/
+{
   background-size: 32px 32px;
   background-repeat: no-repeat;
   background-position: center;
@@ -90,19 +117,22 @@ section.playback button.speed {
   content: '';
   color: transparent;
 }
-
+/*ic_clear_black_36dp_1x*/
 section.playback button.settings {
   grid-column-start: 2;
   background-image: url('/images/settings.png');
+  /*background-image: url('/images/ic_settings_black_36dp_1x.png');*/
 }
 
 section.playback button.speed {
   grid-column-start: 3;
   background-image: url('/images/rewind.png');
+  /*background-image: url('/images/ic_fast_rewind_black_36dp_1x.png');*/
 }
 
 section.playback button.close {
   grid-column-start: 5;
+  /*background-image: url('/images/ic_clear_black_36dp_1x.png');*/
 }
 
 /*.playback button.playback {

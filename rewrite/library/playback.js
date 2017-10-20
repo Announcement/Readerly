@@ -21,7 +21,7 @@ class Playback {
   constructor (it) {
     let configuration
 
-// console.debug('playback:constructor')
+    // console.debug('playback:constructor')
 
     configuration = {}
 
@@ -49,40 +49,6 @@ class Playback {
     cleaned = Playback.clean(text)
 
     this.readText(cleaned)
-  }
-
-  static clean (it) {
-    return _cleanText() || _cleanSentences()
-
-    function _cleanText () {
-      if (it.constructor === String) {
-        return Playback.cleanText(it)
-      }
-
-      return null
-    }
-
-    function _cleanSentences () {
-      if (it.constructor === Array) {
-        return Playback.cleanSentences(it)
-      }
-
-      return null
-    }
-  }
-
-  static cleanText (text) {
-    return cleanText(text)
-  }
-
-  static cleanSentences (sentences) {
-    let map
-    let filter
-
-    map = sentence => sentence.filter(word => word.trim())
-    filter = sentence => sentence.length
-
-    return sentences.map(map).filter(filter)
   }
 
   readText (text) {
@@ -169,6 +135,40 @@ class Playback {
         element.removeChild(element.firstChild)
       }
     }
+  }
+
+  static clean (it) {
+    return _cleanText() || _cleanSentences()
+
+    function _cleanText () {
+      if (it.constructor === String) {
+        return Playback.cleanText(it)
+      }
+
+      return null
+    }
+
+    function _cleanSentences () {
+      if (it.constructor === Array) {
+        return Playback.cleanSentences(it)
+      }
+
+      return null
+    }
+  }
+
+  static cleanText (text) {
+    return cleanText(text)
+  }
+
+  static cleanSentences (sentences) {
+    let map
+    let filter
+
+    map = sentence => sentence.filter(word => word.trim())
+    filter = sentence => sentence.length
+
+    return sentences.map(map).filter(filter)
   }
 }
 

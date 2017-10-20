@@ -134,39 +134,31 @@ export default function (it) {
 }
 
 function rebase (it) {
-  rebaseLink(it)
-  rebaseScript(it)
-  rebaseStyle(it)
-  rebaseImage(it)
-  rebaseAnchor(it)
-}
-
-function rebaseLink (it) {
   it = use(it)
 
-  if (it.is.a('link') && it.has('href')) it.rebase()
+  link(it)
+  script(it)
+  style(it)
+  image(it)
+  anchor(it)
 }
 
-function rebaseScript (it) {
-  it = use(it)
+function link (it) {
+  if (it.is.a('link') && it.has('href') && !it.begins('//')) it.rebase()
+}
 
+function script (it) {
   if (it.is.a('script') && it.has('src')) it.rebase()
 }
 
-function rebaseStyle (it) {
-  it = use(it)
-
+function style (it) {
   if (it.is.a('style')) it.text.fix('url')
 }
 
-function rebaseImage (it) {
-  it = use(it)
-
+function image (it) {
   if (it.is.an('image') && it.has('src')) it.rebase()
 }
 
-function rebaseAnchor (it) {
-  it = use(it)
-
+function anchor (it) {
   if (it.is.an('anchor') && it.has('href') && !it.begins('#')) it.rebase()
 }

@@ -463,7 +463,9 @@ class Display {
 
     it.style['overflow-x'] = 'hidden'
     it.style['overflow-y'] = 'hidden'
-
+    it.style['border-bottom-style'] = 'solid'
+    it.style['border-bottom-width'] = '1px'
+    it.style['border-bottom-color'] = 'black'
   }
 
   focus () {
