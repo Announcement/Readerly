@@ -7,22 +7,20 @@ the plugin is in `/rewrite/`
 
 ## Current tasks
 
-- Make the buttons and text be in the center of the panel (excluding the progress bar).
-- Make the text display (+ sort out the first word missing issue).
-- Set the minimum height to iframe like it was in the old version to take care of an error.
-- Fix the issue of buttons being colored according to current site colours.
 - Add support for the keyboard shortcuts.  [enabled in manifest]
 - Make clicking the progress bar and jumping to a specific point possible.
-
 - Make the extension pause (and unpause) when the word area is clicked.
-- Center all elements properly (buttons/words).
 - Make rewind button work.
 - Make delays from settings work (they don't seem to now).
 - Color the center character red (optimal recognition point).
 
-
 ## Completed tasks
 
+- Make the text display (+ sort out the first word missing issue).
+- Set the minimum height to iframe like it was in the old version to take care of an error.
+- Fix the issue of buttons being colored according to current site colours.
+- Center all elements properly (buttons/words).
+- Make the buttons and text be in the center of the panel (excluding the progress bar).
 - Remove transparency.
 - Increase text font.
 - Chrome will exports `.crx` file for deployment.
