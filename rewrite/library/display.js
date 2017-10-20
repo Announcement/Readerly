@@ -66,8 +66,8 @@ class Display {
 
     rebase(remote)
 
-    $document.head.outerHTML = remote.head.outerHTML
-    $document.body.outerHTML = remote.body.outerHTML
+    $document.head.innerHTML = remote.head.innerHTML
+    $document.body.innerHTML = remote.body.innerHTML
 
     this.resize()
     this._load()
@@ -110,7 +110,6 @@ class Display {
     // console.debug('display:_load')
 
     $window.addEventListener('resize', () => this.resize())
-    $window.requestAnimationFrame(() => this.resize())
 
     // this.resize()
 
@@ -121,6 +120,8 @@ class Display {
 
     playback = new Playback(playbackElement)
     settings = new Settings(settingsElement)
+
+    $window.requestAnimationFrame(() => this.resize())
 
     this.playback = playback
     this.settings = settings
@@ -158,13 +159,14 @@ class Display {
     //
     //   this.resize()
     // }
+
     settings.on('click', () => this.resize())
     settings.on('append', () => this.resize())
     settings.on('remove', () => this.resize())
-
-    // settings.on('show', () => onShow())
-    // settings.on('toggle', () => onToggle())
-    // settings.on('collapse', () => onCollapse())
+    settings.on('show', () => this.resize())
+    settings.on('toggle', () => this.resize())
+    settings.on('collapse', () => this.resize())
+    settings.on('navigate', () => this.resize())
 
     $document.querySelector('button.settings')
       .addEventListener('click', () => this._settings())
@@ -297,13 +299,12 @@ class Display {
 
     console.debug('display:resize')
 
-    style = $window.getComputedStyle($document.body)
-
-    element.style.height = style.getPropertyValue('height')
-
-    // console.debug(element.style.height, )
-
-    this.refresh()
+    window.requestAnimationFrame(() => {
+      style = $window.getComputedStyle($document.body)
+      console.debug(style.getPropertyValue('height'))
+      element.style.height = style.getPropertyValue('height')
+      this.refresh()
+    })
   }
 
   refresh () {
@@ -362,6 +363,7 @@ class Display {
     // console.debug('display:append')
 
     document.body.appendChild(this.element)
+    this.resize()
   }
 
   stop () {

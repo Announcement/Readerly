@@ -28,7 +28,7 @@ class WordSettings extends SettingsPanel {
 
 
   listen () {
-    this.maxLettersShown.on('change', () => this.update())
+    this.maxLettersShown.on('change', value => this.update(this.configuration))
   }
 
   update () {
@@ -52,7 +52,7 @@ class WordSettings extends SettingsPanel {
 
     that = this.element.querySelector('fieldset.max-letters-shown')
 
-    element = !that ? this.createMaxLettersShown() : that
+    element = that ||  this.createMaxLettersShown()
     setting = new Setting(element)
 
     setting.sync()

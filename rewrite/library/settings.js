@@ -24,22 +24,22 @@ class Settings extends Dispatcher {
     * @param {Element} it - Settings element.
     */
   constructor (it) {
+    let parentElement
+    let navigationElement
     let speedSettingsElement
     let wordSettingsElement
-    let navigationElement
-    let parentElement
 
+    let navigation
     let speedSettings
     let wordSettings
-    let navigation
 
     // console.debug('settings:constructor')
 
+    parentElement = it.parentNode
+
+    navigationElement = it.querySelector('nav')
     speedSettingsElement = it.querySelector('form.speed')
     wordSettingsElement = it.querySelector('form.word')
-    navigationElement = it.querySelector('nav')
-
-    parentElement = it.parentNode
 
     super()
 
@@ -64,12 +64,12 @@ class Settings extends Dispatcher {
       this._navigate(element)
     })
 
-    speedSettings.on('change', () => {
+    speedSettings.on('change', configuration => {
       console.debug('settings - speed on change')
       this.dispatch('change', this.configuration)
     })
 
-    wordSettings.on('change', () => {
+    wordSettings.on('change', configuration => {
       console.debug('settings - word on change')
       this.dispatch('change', this.configuration)
     })
@@ -160,8 +160,11 @@ class Settings extends Dispatcher {
 
     configuration = {}
 
-    Object.assign(configuration, this.speed.configuration)
-    Object.assign(configuration, this.words.configuration)
+    console.debug(this.speed)
+    console.debug(this.words)
+
+    // Object.assign(configuration, this.speed.configuration)
+    // Object.assign(configuration, this.words.configuration)
 
     return configuration
   }
@@ -218,6 +221,8 @@ class Settings extends Dispatcher {
 
     speed()
     word()
+
+    this.dispatch('navigate')
   }
 }
 
