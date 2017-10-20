@@ -7,10 +7,12 @@ the plugin is in `/rewrite/`
 
 ## Current tasks
 
+- Make rewind button work.
+- Make the close button work.
+- Add a line at the very bottom of the iframe so that it is visible where it ends.
 - Add support for the keyboard shortcuts.  [enabled in manifest]
 - Make clicking the progress bar and jumping to a specific point possible.
 - Make the extension pause (and unpause) when the word area is clicked.
-- Make rewind button work.
 - Make delays from settings work (they don't seem to now).
 - Color the center character red (optimal recognition point).
 
