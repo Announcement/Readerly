@@ -57,3 +57,6 @@ git pull
 ``` command
 npm run-script build
 ```
+
+
+Helpful regular expression `^(?:(?!\/{2})\s*)*console`

@@ -197,24 +197,26 @@ class Settings extends Dispatcher {
   }
 
   _navigate (element) {
-    let reference
+    // let reference
     let speed
     let word
 
     // console.debug('navigate')
 
-    reference = element.getAttribute('href')
+    // reference = element.getAttribute('href')
 
     // console.debug('settings:_navigate', reference)
 
     speed = () => {
-      if (reference === '#readerly-settings-speed') {
+      if (element.classList.contains('speed')) {
+      // if (reference === '#readerly-settings-speed') {
         this._speed()
       }
     }
 
     word = () => {
-      if (reference === '#readerly-settings-word') {
+      if (element.classList.contains('word')) {
+      // if (reference === '#readerly-settings-word') {
         this._word()
       }
     }

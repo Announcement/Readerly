@@ -4,11 +4,9 @@
   padding: 0;
 }
 
-html,
-body {
-  /*height: 100%;*/
-  /*overflow-x: hidden;*/
-  /*overflow-y: hidden;*/
+html, body
+{
+  height: min-content;
 }
 
 progress::-webkit-progress-bar {
@@ -20,16 +18,17 @@ progress::-webkit-progress-value {
 }
 
 body {
-  display: flex;
   background: white;
+  display: flex;
   flex-direction: column;
   justify-content: center;
-  overflow: hidden;
+  padding: 0;
+  margin: 0;
 }
 
 section.playback {
   display: grid;
-  height: 80px;
+  min-height: 80px;
 
   justify-items: center;
   align-items: center;
