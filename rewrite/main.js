@@ -6,7 +6,7 @@ import exists from './library/utilities/exists'
 let $browser
 
 let display
-let everything
+// let everything
 
 main()
 
