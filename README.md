@@ -1,6 +1,9 @@
 # Readerly
 
-the plugin itself is in `/distribution/`
+- Browser Extension for Rapid Reading
+
+~the plugin itself is in `/distribution/`~
+the plugin is in `/rewrite/`
 
 ## Current tasks
 
@@ -10,14 +13,13 @@ the plugin itself is in `/distribution/`
 - Fix the issue of buttons being colored according to current site colours.
 - Add support for the keyboard shortcuts.  [enabled in manifest]
 - Make clicking the progress bar and jumping to a specific point possible.
-<<<<<<< Updated upstream
+
 - Make the extension pause (and unpause) when the word area is clicked.
 - Center all elements properly (buttons/words).
 - Make rewind button work.
 - Make delays from settings work (they don't seem to now).
 - Color the center character red (optimal recognition point).
-=======
->>>>>>> Stashed changes
+
 
 ## Completed tasks
 

@@ -34,7 +34,7 @@ function onMessage (request, sender, sendResponse) {
       if (request.message === 'browserAction:onClicked') {
         // console.debug(request.message, request.tab)
 
-        display.toggle(everything)
+        display.toggle()
       }
     }
   }

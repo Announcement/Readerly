@@ -47,8 +47,6 @@ class Display {
 
     typeof browser === 'undefined' ? chrome() : firefox()
 
-    document.body.appendChild(element)
-
     Display.stylize(this.element)
   }
 
@@ -312,10 +310,10 @@ class Display {
     // }
   }
 
-  toggle (it) {
+  toggle () {
     // console.debug('display:toggle')
 
-    return !this.enabled ? this.enable(it) : this.disable(it)
+    return !this.enabled ? this.enable() : this.disable()
   }
 
   get enabled () {
@@ -324,7 +322,7 @@ class Display {
     return document.body.contains(this.element)
   }
 
-  enable (it) {
+  enable () {
     // console.debug('display:enable')
 
     // if (it) this.stream(it)
