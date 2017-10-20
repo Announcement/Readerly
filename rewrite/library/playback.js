@@ -34,7 +34,7 @@ class Playback {
 
   configure (it) {
     console.debug('playback is being configured', it)
-    // Object.assign(this.configuration, it)
+    Object.assign(this.configuration, it)
   }
 
   full () {

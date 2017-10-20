@@ -65,13 +65,11 @@ class Settings extends Dispatcher {
     })
 
     speedSettings.on('change', configuration => {
-      console.debug('settings - speed on change')
-      this.dispatch('change', this.configuration)
+      this.dispatch('change', configuration)
     })
 
     wordSettings.on('change', configuration => {
-      console.debug('settings - word on change')
-      this.dispatch('change', this.configuration)
+      this.dispatch('change', configuration)
     })
 
     this.remove()
@@ -163,8 +161,8 @@ class Settings extends Dispatcher {
     // console.debug(this.speed)
     // console.debug(this.words)
 
-    // Object.assign(configuration, this.speed.configuration)
-    // Object.assign(configuration, this.words.configuration)
+    Object.assign(configuration, this.speed.configuration)
+    Object.assign(configuration, this.words.configuration)
 
     return configuration
   }

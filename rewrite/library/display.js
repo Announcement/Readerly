@@ -126,9 +126,9 @@ class Display {
     this.playback = playback
     this.settings = settings
 
-    settings.on('change', () => {
-      console.debug('display - settings on change')
-      // playback.configure(configuration)
+    settings.on('change', configuration => {
+      // console.debug('display - settings on change')
+      playback.configure(configuration)
     })
 
     // onAppend = () => {
