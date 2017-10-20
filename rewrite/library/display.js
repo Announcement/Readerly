@@ -173,7 +173,7 @@ class Display {
 
     playback.full()
 
-    console.debug(settings.debug())
+    // console.debug(settings.debug())
 
     // function ensurePlaybackElement () {
     //   let that
@@ -297,11 +297,11 @@ class Display {
     $window = element.contentWindow
     $document = element.contentDocument
 
-    console.debug('display:resize')
+    // console.debug('display:resize')
 
     window.requestAnimationFrame(() => {
       style = $window.getComputedStyle($document.body)
-      console.debug(style.getPropertyValue('height'))
+      // console.debug(style.getPropertyValue('height'))
       element.style.height = style.getPropertyValue('height')
       this.refresh()
     })

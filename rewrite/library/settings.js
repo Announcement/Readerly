@@ -160,8 +160,8 @@ class Settings extends Dispatcher {
 
     configuration = {}
 
-    console.debug(this.speed)
-    console.debug(this.words)
+    // console.debug(this.speed)
+    // console.debug(this.words)
 
     // Object.assign(configuration, this.speed.configuration)
     // Object.assign(configuration, this.words.configuration)
@@ -201,7 +201,7 @@ class Settings extends Dispatcher {
     let speed
     let word
 
-    console.debug('navigate')
+    // console.debug('navigate')
 
     reference = element.getAttribute('href')
 
