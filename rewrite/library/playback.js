@@ -1,4 +1,5 @@
 import cleanText from './utilities/clean-text'
+import Dispatcher from './utilities/dispatcher'
 
 const extractor = require('@knod/unfluff')
 const tokenizer = require('@knod/sbd')
@@ -17,7 +18,7 @@ const tokenizer = require('@knod/sbd')
 //   sentenceModifier: 1
 // }
 
-class Playback {
+class Playback extends Dispatcher {
   constructor (it) {
     let configuration
 
@@ -27,6 +28,8 @@ class Playback {
 
     configuration.wordsPerMinute = 450
     configuration.sentenceEndDelay = 5
+
+    super()
 
     this.element = it
     this.configuration = configuration

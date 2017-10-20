@@ -171,6 +171,9 @@ class Display {
     $document.querySelector('button.settings')
       .addEventListener('click', () => this._settings())
 
+    $document.querySelector('button.close')
+      .addEventListener('click', () => this._close())
+
     playback.full()
 
     // console.debug(settings.debug())
