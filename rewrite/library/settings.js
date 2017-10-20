@@ -60,6 +60,7 @@ class Settings extends Dispatcher {
     this.word = wordSettings
 
     navigation.on('click', element => {
+      this.dispatch('click', element)
       this._navigate(element)
     })
 
@@ -132,13 +133,13 @@ class Settings extends Dispatcher {
   }
 
   get enabled () {
-// console.debug('settings:enabled')
+    // console.debug('settings:enabled')
 
     return this.parent.contains(this.element)
   }
 
   remove () {
-// console.debug('settings:remove')
+    // console.debug('settings:remove')
 
     // this.element.parentNode.removeChild(this.element)
     this.parent.removeChild(this.element)
@@ -147,7 +148,7 @@ class Settings extends Dispatcher {
   }
 
   append () {
-// console.debug('settings:append')
+    // console.debug('settings:append')
 
     this.parent.appendChild(this.element)
 

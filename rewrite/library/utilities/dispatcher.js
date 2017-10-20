@@ -12,30 +12,40 @@ class Dispatcher {
     console.debug(this.constructor.name, '<-', 'Dispatcher  ')
   }
 
+  get listener () {
+    return $listener.get(this)
+  }
+
+  set listener (value) {
+    return $listener.set(this, value)
+  }
+
+  get queue () {
+    return $queue.get(this)
+  }
+
+  set queue (value) {
+    return $queue.set(this, value)
+  }
+
   _ensure (eventName) {
-    let listener
-    let queue
+    let _listener
+    let _queue
 
-    listener = $listener.get(this)
-    queue = $queue.get(this)
-
-    listener = () => {
-      if (!listener.hasOwnProperty(eventName)) {
-        listener[eventName] = []
+    _listener = () => {
+      if (!this.listener.hasOwnProperty(eventName)) {
+        this.listener[eventName] = []
       }
     }
 
-    queue = () => {
-      if (!queue.hasOwnProperty(eventName)) {
-        queue[eventName] = []
+    _queue = () => {
+      if (!this.queue.hasOwnProperty(eventName)) {
+        this.queue[eventName] = []
       }
     }
 
-    listener()
-    queue()
-
-    $listener.set(this, listener)
-    $queue.set(this, queue)
+    _listener()
+    _queue()
   }
 
   _consume (eventName) {
@@ -43,23 +53,23 @@ class Dispatcher {
     let forEachQueue
 
     forEachQueue = () => {
-      let _listener
+      // let _listener
       let _queue
 
-      let listener
+      // let listener
       let queue
 
       let item
 
-      _listener = $listener.get(this)
+      // _listener = $listener.get(this)
       _queue = $queue.get(this)
 
-      listener = _listener[eventName]
+      // listener = _listener[eventName]
       queue = _queue[eventName]
 
       while (queue.length) {
         item = queue.shift()
-        listener.forEach(it => it(item))
+        $listener.get(this)[eventName].forEach(it => it(item))
       }
 
       _queue[eventName] = queue
@@ -141,6 +151,13 @@ class Dispatcher {
     // _listener[eventName] = listener
     //
     // $listener.set(this, _listener)
+  }
+
+  debug () {
+    return {
+      listener: this.listener,
+      queue: this.queue
+    }
   }
 }
 

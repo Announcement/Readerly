@@ -69,6 +69,7 @@ class Display {
     $document.head.outerHTML = remote.head.outerHTML
     $document.body.outerHTML = remote.body.outerHTML
 
+    this.resize()
     this._load()
   }
 
@@ -95,11 +96,11 @@ class Display {
     let playback
     let settings
 
-    let onAppend
-    let onRemove
-    let onShow
-    let onToggle
-    let onCollapse
+    // let onAppend
+    // let onRemove
+    // let onShow
+    // let onToggle
+    // let onCollapse
 
     element = this.element
 
@@ -110,6 +111,8 @@ class Display {
 
     $window.addEventListener('resize', () => this.resize())
     $window.requestAnimationFrame(() => this.resize())
+
+    // this.resize()
 
     // this.refresh()
 
@@ -127,45 +130,48 @@ class Display {
       // playback.configure(configuration)
     })
 
-    onAppend = () => {
-      // console.debug('display:_load', 'onAppend()')
-      this.resize()
-    }
+    // onAppend = () => {
+    //   // console.debug('display:_load', 'onAppend()')
+    //   this.resize()
+    // }
 
-    onRemove = () => {
-      // console.debug('display:_load', 'onRemove()')
+    // onRemove = () => {
+    //   // console.debug('display:_load', 'onRemove()')
+    //
+    //   this.resize()
+    // }
 
-      this.resize()
-    }
+    // onShow = () => {
+    //   // console.debug('display:_load', 'onShow()')
+    //
+    //   this.resize()
+    // }
 
-    onShow = () => {
-      // console.debug('display:_load', 'onShow()')
+    // onToggle = () => {
+    //   // console.debug('display:_load', 'onToggle()')
+    //
+    //   this.resize()
+    // }
 
-      this.resize()
-    }
+    // onCollapse = () => {
+    //   // console.debug('display:_load', 'onCollapse()')
+    //
+    //   this.resize()
+    // }
+    settings.on('click', () => this.resize())
+    settings.on('append', () => this.resize())
+    settings.on('remove', () => this.resize())
 
-    onToggle = () => {
-      // console.debug('display:_load', 'onToggle()')
-
-      this.resize()
-    }
-
-    onCollapse = () => {
-      // console.debug('display:_load', 'onCollapse()')
-
-      this.resize()
-    }
-
-    settings.on('append', onAppend)
-    settings.on('remove', onRemove)
-    settings.on('show', onShow)
-    settings.on('toggle', onToggle)
-    settings.on('collapse', onCollapse)
+    // settings.on('show', () => onShow())
+    // settings.on('toggle', () => onToggle())
+    // settings.on('collapse', () => onCollapse())
 
     $document.querySelector('button.settings')
       .addEventListener('click', () => this._settings())
 
     playback.full()
+
+    console.debug(settings.debug())
 
     // function ensurePlaybackElement () {
     //   let that
@@ -248,7 +254,7 @@ class Display {
   _settings () {
     // console.debug('display:_settings')
     this.settings.toggle()
-    this.resize()
+    // this.resize()
   }
 
   _speed () {
@@ -295,7 +301,7 @@ class Display {
 
     element.style.height = style.getPropertyValue('height')
 
-    console.debug(element.style.height, )
+    // console.debug(element.style.height, )
 
     this.refresh()
   }
@@ -329,6 +335,7 @@ class Display {
 
     this.open()
     this.focus()
+    this.resize()
   }
 
   disable () {
