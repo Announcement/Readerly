@@ -148,13 +148,18 @@ class Display {
     $document.querySelector('button.close')
       .addEventListener('click', () => this._close())
 
+    $document.querySelector('button.speed')
+      .addEventListener('click', () => this._speed())
+
     playback.full()
   }
   _ready ($document, $window) {}
   _settings () {
     this.settings.toggle()
   }
-  _speed () {}
+  _speed () {
+    this.playback.blink()
+  }
   _close () {
     this.disable()
   }

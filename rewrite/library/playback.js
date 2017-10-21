@@ -21,7 +21,7 @@ const tokenizer = require('@knod/sbd')
 class Playback extends Dispatcher {
   constructor (it) {
     let configuration
-    
+
     configuration = {}
 
     configuration.wordsPerMinute = 450
@@ -30,6 +30,7 @@ class Playback extends Dispatcher {
     super()
 
     this.element = it
+    this.document = it.ownerDocument
     this.configuration = configuration
   }
 
@@ -71,9 +72,51 @@ class Playback extends Dispatcher {
     let forEachSentence
     let forEachWord
     let show
+    let output
 
     outputElement = this.element.querySelector('div.text')
 
+    output = it => {
+      let word
+      let middle
+      let beforeString
+      let beforeText
+      let afterString
+      let afterText
+      let centerText
+      let centerString
+      let centerElement
+      let parity
+      let offset
+
+      word = this.document.createElement('span')
+      middle = Math.floor(it.length / 2)
+      parity = it.lenth % 2 === 0
+      offset = 1
+
+      if (!parity) {
+        middle--
+        offset++
+      }
+      // offset = !parity ? 2 : 1
+
+      beforeString = it.substring(0, middle)
+      centerString = it.substring(middle, middle + offset)
+      afterString = it.substring(middle + offset)
+
+      beforeText = this.document.createTextNode(beforeString)
+      centerText = this.document.createTextNode(centerString)
+      afterText = this.document.createTextNode(afterString)
+
+      centerElement = this.document.createElement('mark')
+      centerElement.appendChild(centerText)
+
+      word.appendChild(beforeText)
+      word.appendChild(centerElement)
+      word.appendChild(afterText)
+
+      outputElement.appendChild(word)
+    }
     show = (sentenceIndex, wordIndex) => {
       let configuration
       let timeout
@@ -82,17 +125,18 @@ class Playback extends Dispatcher {
 
       timeout = 1000 * 60 / configuration.wordsPerMinute
 
+
       return new Promise(function (resolve, reject) {
         let sentence
         let word
-        let text
+        // let text
         let delay
 
         removeChildren(outputElement)
 
         sentence = sentences[sentenceIndex]
         word = sentence[wordIndex]
-        text = document.createTextNode(word)
+        // text = document.createTextNode(word)
 
         delay = Math.round(timeout / 5 * word.length)
 
@@ -100,7 +144,9 @@ class Playback extends Dispatcher {
           delay += timeout / 5 * configuration.sentenceEndDelay
         }
 
-        outputElement.appendChild(text)
+        output(word)
+
+        // outputElement.appendChild(pretty(word))
 
         setTimeout(resolve, delay)
       })
