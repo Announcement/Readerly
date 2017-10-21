@@ -14,11 +14,18 @@ class Display {
    */
   constructor () {
     let element
+
     let chrome
     let firefox
 
+    let contents
+    let sentences
+
     this.filter = new WeakMap()
     this.zIndex = new WeakMap()
+
+    contents = Playback.getText(document.body)
+    sentences = Playback.getSentences(contents)
 
     element = document.createElement('iframe')
     element.setAttribute('height', 80)
@@ -26,6 +33,8 @@ class Display {
     element.id = 'readerly'
 
     this.element = element
+    this.contents = contents
+    this.sentences = sentences
     this.initialized = false
 
     /**
@@ -108,6 +117,7 @@ class Display {
 
     let playbackElement
     let settingsElement
+    let outputElement
 
     let playback
     let settings
@@ -121,6 +131,9 @@ class Display {
 
     playbackElement = $document.querySelector('section.playback')
     settingsElement = $document.querySelector('section.settings')
+    outputElement = playbackElement.querySelector('div.text')
+
+    Playback.readWord(this.sentences[0][0], outputElement)
 
     playback = new Playback(playbackElement)
     settings = new Settings(settingsElement)
