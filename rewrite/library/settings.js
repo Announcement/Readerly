@@ -46,13 +46,15 @@ class Settings extends Dispatcher {
     this.element = it
     this.parent = parentElement
 
-    // console.debug('settings:constructor', 'prepare to load')
-
     navigation = new Navigation(navigationElement)
     speedSettings = new SpeedSettings(speedSettingsElement)
     wordSettings = new WordSettings(wordSettingsElement)
 
-    // console.debug('settings:constructor', 'submodules', navigation, speedSettings, wordSettings)
+    speedSettings.hide()
+    wordSettings.hide()
+
+    wordSettings.capture(navigation)
+    speedSettings.capture(navigation)
 
     this.parent = parentElement
     this.navigation = navigation
@@ -110,49 +112,20 @@ class Settings extends Dispatcher {
     // this.element = scope(this.element)
   }
 
-  toggle () {
-  // console.debug('settings:toggle')
-
-  // console.debug('settings:toggle', 'this.parent', this.parent)
-  // console.debug('settings:toggle', 'this.element', this.element)
-  // console.debug('settings:toggle', 'this.enabled', this.enabled)
-
-    if (this.enabled === false) {
-      // console.debug('settings:toggle', 'should call this.append()')
-      this.append()
-    } else {
-      // console.debug('settings:toggle', 'should call this.remove()')
-      this.remove()
-    }
-
-    // this.dispatch('toggle')
-
-    // !this.enabled ? this.append() : this.remove()
-  }
-
+  /**
+   * Check if the settigns view is enabled
+   * @returns {boolean} Representing whether or not the panel is visible.
+   */
   get enabled () {
     // console.debug('settings:enabled')
 
     return this.parent.contains(this.element)
   }
 
-  remove () {
-    // console.debug('settings:remove')
-
-    // this.element.parentNode.removeChild(this.element)
-    this.parent.removeChild(this.element)
-
-    this.dispatch('remove')
-  }
-
-  append () {
-    // console.debug('settings:append')
-
-    this.parent.appendChild(this.element)
-
-    this.dispatch('append')
-  }
-
+  /**
+   * Get configuration from each of its children's settings.
+   * @returns {object} Populated with properties pertaining of all available settings.
+   */
   get configuration () {
     let configuration
 
@@ -167,8 +140,61 @@ class Settings extends Dispatcher {
     return configuration
   }
 
+  /**
+   * Disable if enabled or enable if disabled
+   * @method toggle
+   */
+  toggle () {
+    // console.debug('settings:toggle')
+
+    // console.debug('settings:toggle', 'this.parent', this.parent)
+    // console.debug('settings:toggle', 'this.element', this.element)
+    // console.debug('settings:toggle', 'this.enabled', this.enabled)
+
+    if (this.enabled === false) {
+      // console.debug('settings:toggle', 'should call this.append()')
+      this.append()
+    } else {
+      // console.debug('settings:toggle', 'should call this.remove()')
+      this.remove()
+    }
+
+    // this.dispatch('toggle')
+
+    // !this.enabled ? this.append() : this.remove()
+  }
+
+  /**
+   * Remove the Settings View from its parent.
+   * @method remove
+   */
+  remove () {
+    // console.debug('settings:remove')
+
+    // this.element.parentNode.removeChild(this.element)
+    this.parent.removeChild(this.element)
+
+    this.dispatch('remove')
+  }
+
+  /**
+   * Append the Settings View from its parent.
+   * @method append
+   */
+  append () {
+    // console.debug('settings:append')
+
+    this.parent.appendChild(this.element)
+
+    this.dispatch('append')
+  }
+
+  /**
+   * Hide all of the child Setting Views.
+   * @method collapse
+   */
   collapse () {
-// console.debug('settings:collapse')
+    // console.debug('settings:collapse')
 
     this.speed.hide()
     this.word.hide()
@@ -176,8 +202,12 @@ class Settings extends Dispatcher {
     this.dispatch('collapse')
   }
 
+  /**
+   * This is what happens when for the speed child.
+   * @method _speed
+   */
   _speed () {
-// console.debug('settings:_speed')
+    // console.debug('settings:_speed')
 
     this.collapse()
     this.speed.show()
@@ -185,8 +215,12 @@ class Settings extends Dispatcher {
     this.dispatch('show')
   }
 
+  /**
+   * This is what happens when for the word child.
+   * @method _word
+   */
   _word () {
-// console.debug('settings:_word')
+    // console.debug('settings:_word')
 
     this.collapse()
     this.word.show()
@@ -194,20 +228,20 @@ class Settings extends Dispatcher {
     this.dispatch('show')
   }
 
+  /**
+   * This is what happens when for the speed child.
+   * @method _navigate
+   */
   _navigate (element) {
-    // let reference
     let speed
     let word
 
-    // console.debug('navigate')
-
-    // reference = element.getAttribute('href')
-
-    // console.debug('settings:_navigate', reference)
-
+    /**
+     * Handle potential speed navigation.
+     * @method speed
+     */
     speed = () => {
       if (element.classList.contains('speed')) {
-      // if (reference === '#readerly-settings-speed') {
         this._speed()
       }
     }

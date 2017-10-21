@@ -1,0 +1,15 @@
+#readerly {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  outline: none;
+  border: 0 solid transparent;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: black;
+  background: white;
+  height: 80px;
+}

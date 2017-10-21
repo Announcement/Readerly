@@ -9,7 +9,7 @@ class Dispatcher {
     $listener.set(this, {})
     $queue.set(this, {})
 
-    console.debug(this.constructor.name, '<-', 'Dispatcher  ')
+    // console.debug(this.constructor.name, '<-', 'Dispatcher  ')
   }
 
   get listener () {
@@ -132,8 +132,8 @@ class Dispatcher {
 
     // listener = _listener[eventName]
 
-    console.debug(this.constructor.name,
-      'Dispatcher:dispatch', 'eventName', eventName)
+    // console.debug(this.constructor.name,
+    //   'Dispatcher:dispatch', 'eventName', eventName)
 
     this._ensure(eventName)
 

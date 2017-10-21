@@ -6,7 +6,7 @@ class SpeedSettings extends SettingsPanel {
 
     super(it)
 
-// console.debug('SpeedSettings')
+    // console.debug('SpeedSettings')
 
     this.ensureWordsPerMinute()
     this.ensureSentenceEndDelay()

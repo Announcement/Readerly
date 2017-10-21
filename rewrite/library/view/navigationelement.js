@@ -1,15 +1,24 @@
-class NavigationElement {
-  constructor(string) {
-    let element
-    let text
+import Dispatcher from '../utilities/dispatcher'
 
-    element = document.createElement('a')
-    text = document.createTextNode(string)
+class NavigationElement extends Dispatcher {
+  constructor (it) {
+    super()
 
-    element.appendChild(text)
-    element.classList.add('navigation-element')
+    this.element = it
+    this.install()
+  }
 
-    this.element = element
+  _click (event) {
+    this.dispatch('click', this.element)
+    this.dispatch('navigate', this.element)
+
+    event.preventDefault()
+
+    return false
+  }
+
+  install () {
+    this.element.addEventListener('click', event => this._click(event))
   }
 }
 

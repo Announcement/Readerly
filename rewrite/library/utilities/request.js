@@ -61,7 +61,7 @@ class Request {
     let request
     let isError
 
-    console.debug(address, data, protocol, responseType)
+    // console.debug(address, data, protocol, responseType)
 
     request = new XMLHttpRequest()
     isError = hasError(request)
@@ -85,7 +85,7 @@ class Request {
     let isError
     let url
 
-    console.debug(address, data, protocol, responseType)
+    // console.debug(address, data, protocol, responseType)
 
     request = new XMLHttpRequest()
     isError = hasError(request)

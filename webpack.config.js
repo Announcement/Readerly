@@ -40,8 +40,8 @@ module.exports = {
       jquery: 'jquery/src/jquery'
     }
   },
-  // watch: true,
-  // watchOptions: {
-  //   ignored: /node_modules/
-  // }
+  watch: true,
+  watchOptions: {
+    ignored: /node_modules/
+  }
 }

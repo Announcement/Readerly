@@ -21,6 +21,7 @@ class Display {
     this.zIndex = new WeakMap()
 
     element = document.createElement('iframe')
+    element.setAttribute('height', 80)
 
     element.id = 'readerly'
 
@@ -45,9 +46,23 @@ class Display {
       element.addEventListener('load', () => this._firefox())
     }
 
+    this.stylesheet()
+
     typeof browser === 'undefined' ? chrome() : firefox()
   }
 
+  get enabled () {
+    // console.debug('display:enabled')
+
+    return document.body.contains(this.element)
+  }
+
+  /**
+   * Load the extension styles with a stylesheet injected into the page document head.
+   *
+   * @async
+   * @method stylesheet
+   */
   async _chrome () {
     let $window
     let $document
@@ -70,18 +85,22 @@ class Display {
     this.resize()
     this._load()
   }
-
   async _firefox () {
     this._load()
   }
 
-  /**
-   *
-   * @see {@link resize}
-   * @see {@link Playback}
-   * @see {@link Settings}
-   * @see {@link _settings}
-   */
+  async stylesheet () {
+    let request
+    let element
+
+    element = document.createElement('style')
+    request = await Request.get(address('style/extension.css'))
+
+    element.textContent = request.responseText
+
+    document.head.appendChild(element)
+  }
+
   _load () {
     let element
 
@@ -100,7 +119,7 @@ class Display {
     // let onToggle
     // let onCollapse
 
-    Display.stylize(this.element)
+    // Display.stylize(this.element)
 
     element = this.element
 
@@ -230,7 +249,6 @@ class Display {
     //   return element
     // }
   }
-
   _ready ($document, $window) {
     // console.log('loaded')
 
@@ -255,22 +273,18 @@ class Display {
     //   .querySelector('progress')
     //   .addEventListener('click', it => this._progress(it))
   }
-
   _settings () {
     // console.debug('display:_settings')
     this.settings.toggle()
     // this.resize()
   }
-
   _speed () {
     // console.debug('display:_speed')
   }
-
   _close () {
     // console.debug('display:_close')
     this.disable()
   }
-
   _progress (e) {
     // let progress
     // let percent
@@ -309,7 +323,6 @@ class Display {
       this.refresh()
     })
   }
-
   refresh () {
     // let userAgent
     // userAgent = window.navigator.userAgent
@@ -319,19 +332,11 @@ class Display {
     //   document.write('')
     // }
   }
-
   toggle () {
     // console.debug('display:toggle')
 
     return !this.enabled ? this.enable() : this.disable()
   }
-
-  get enabled () {
-    // console.debug('display:enabled')
-
-    return document.body.contains(this.element)
-  }
-
   enable () {
     // console.debug('display:enable')
 
@@ -339,42 +344,36 @@ class Display {
 
     this.open()
     this.focus()
-    this.resize()
   }
-
   disable () {
     // console.debug('display:disable')
 
     this.blur()
     this.close()
   }
-
   close () {
     // console.debug('display:close')
 
     this.remove()
     this.stop()
   }
-
   remove () {
     // console.debug('display:remove')
 
     document.body.removeChild(this.element)
   }
-
   append () {
     // console.debug('display:append')
 
     document.body.appendChild(this.element)
+    this.element.style.height = '80px'
     this.resize()
   }
-
   stop () {
     // console.debug('display:stop')
 
     this.timeout && clearTimeout(this.timeout)
   }
-
   initialize () {
     // console.debug('display:initialize')
 
@@ -384,14 +383,13 @@ class Display {
     //
     // this.initialized = true
   }
-
   open (playback) {
     // console.debug('display:open')
 
     this.append()
+    this.resize()
     // this.initialize()
   }
-
   stream (content) {
     // let playbackElement
     // let progressElement
@@ -451,26 +449,6 @@ class Display {
     //   }
     // }
   }
-
-  static stylize (it) {
-    // console.debug('Display:stylize')
-
-    it.style.position = 'fixed'
-    it.style.top = '0'
-    it.style.left = '0'
-    it.style.width = '100%'
-    it.style.outline = 'none'
-    it.style.border = '0 solid transparent'
-    // it.style.right = '0'
-    // it.style.width = '100%'
-
-    it.style['overflow-x'] = 'hidden'
-    it.style['overflow-y'] = 'hidden'
-    it.style['border-bottom-style'] = 'solid'
-    it.style['border-bottom-width'] = '1px'
-    it.style['border-bottom-color'] = 'black'
-  }
-
   focus () {
     // console.debug('display:focus')
 
@@ -485,7 +463,6 @@ class Display {
 
     this.element.style['z-index'] = zIndex.call(this) + 1
   }
-
   blur () {
     // console.debug('display:blur')
 

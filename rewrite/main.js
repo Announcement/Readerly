@@ -115,8 +115,6 @@ function listen () {
 
   function listener (request, sender, sendResponse) {
     let testListener = () => {
-      console.debug('listen', 'listener')
-
       return !exists(onMessageCache) || onMessageCache !== request.time
     }
 

@@ -10,12 +10,12 @@ function dangerous (it) {
 
 /**
  * Compare an item to undefined and null.
- * @method exists
+ * @method empty
  * @param {object} it - Item to be tested for existance.
  * @returns {boolean} Representing an item's existance.
  */
-function exists (it) {
-  return it !== undefined && it !== null
+function empty (it) {
+  return it === undefined || it === null
 }
 
 /**
@@ -25,5 +25,5 @@ function exists (it) {
  * @returns {boolean} Representing an items existance.
  */
 export default function safe (it) {
-  return !dangerous(it) && exists(it)
+  return dangerous(it) || empty(it)
 }

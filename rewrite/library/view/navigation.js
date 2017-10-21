@@ -1,53 +1,35 @@
 import Dispatcher from '../utilities/dispatcher'
+import NavigationElement from './navigationelement'
 
 class Navigation extends Dispatcher {
-  constructor (it) {
+  constructor (item) {
+    let nodes
     let elements
-    // let list
 
     super()
 
-    this.element = it
-
-    // console.debug('navigation:constructor', 'fetch elements')
-
-    elements = it.querySelectorAll('a')
-
-    // console.debug('navigation:constructor', 'elements', elements)
+    nodes = [... item.querySelectorAll('a')]
+    elements = nodes.map(it => new NavigationElement(it))
 
     this.elements = elements
+    this.nodes = nodes
 
     this.install()
-    // list = [...elements]
-
-    // console.debug('navigation:constructor', 'list', list)
-
-    // list.forEach(item => {
-      // console.debug('navigation:constructor', 'list.forEach', 'item', item)
-
-      // item.addEventListener('click', () => this._click(item))
-    // })
-
-    // let element
-    //
-    // element = document.createElement('nav')
-    // element.classList.add('navigation')
-    //
-    // this.element = element
   }
 
-  click (element) {
-    this.dispatch('click', element)
+  attach (element) {
+    element.on('click', it => this._click(it))
+    element.on('navigate', it => this._navigate(it))
   }
-
   install () {
-    let list
+    this.elements.forEach(it => this.attach(it))
+  }
 
-    list = [...this.elements]
-
-    list.forEach(it => {
-      it.addEventListener('click', () => this.click(it))
-    })
+  _click (it) {
+    this.dispatch('click', it)
+  }
+  _navigate (it) {
+    this.dispatch('navigate', it)
   }
 }
 
