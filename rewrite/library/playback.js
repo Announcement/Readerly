@@ -21,9 +21,7 @@ const tokenizer = require('@knod/sbd')
 class Playback extends Dispatcher {
   constructor (it) {
     let configuration
-
-    // console.debug('playback:constructor')
-
+    
     configuration = {}
 
     configuration.wordsPerMinute = 450

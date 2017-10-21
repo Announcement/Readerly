@@ -7,16 +7,12 @@ export default function getBrowser () {
   function _chrome () {
     if (typeof browser === 'undefined') {
       $browser = chrome
-
-// console.debug('Browser detected as Chrome.')
     }
   }
 
   function _browser () {
     if (typeof browser !== 'undefined') {
       $browser = browser
-
-// console.debug('Browser detected as Firefox.')
     }
   }
 

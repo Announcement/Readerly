@@ -4,21 +4,9 @@ import getBrowser from './library/utilities/get-browser'
 import exists from './library/utilities/exists'
 
 let $browser
-
 let display
-// let everything
 
 main()
-
-// $browser = getBrowser()
-
-// $browser.runtime.onMessage.addListener(message)
-
-// document.addEventListener('DOMContentLoaded', function () {
-// })
-
-// display = new Display()
-// everything = new Playback(document.body.outerHTML)
 
 function onMessage (request, sender, sendResponse) {
   browserAction()
@@ -32,8 +20,6 @@ function onMessage (request, sender, sendResponse) {
 
     function onClicked () {
       if (request.message === 'browserAction:onClicked') {
-        // console.debug(request.message, request.tab)
-
         display.toggle()
       }
     }
@@ -45,9 +31,7 @@ function onMessage (request, sender, sendResponse) {
     }
 
     function onCommand () {
-      if (request.message === 'commands:onCommand') {
-        // console.debug(request.message, request.name)
-      }
+      if (request.message === 'commands:onCommand') {}
     }
   }
 
@@ -58,15 +42,11 @@ function onMessage (request, sender, sendResponse) {
     }
 
     function onUpdateAvailable () {
-      if (request.message === 'runtime:onUpdateAvailable') {
-        // console.debug(request.message, request.details)
-      }
+      if (request.message === 'runtime:onUpdateAvailable') {}
     }
 
     function onSuspend () {
-      if (request.message === 'runtime:onSuspend') {
-        // console.debug(request.message)
-      }
+      if (request.message === 'runtime:onSuspend') {}
     }
   }
 }

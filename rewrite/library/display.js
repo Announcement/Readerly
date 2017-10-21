@@ -95,7 +95,6 @@ class Display {
 
     element = document.createElement('style')
     request = await Request.get(address('style/extension.css'))
-
     element.textContent = request.responseText
 
     document.head.appendChild(element)
@@ -113,26 +112,12 @@ class Display {
     let playback
     let settings
 
-    // let onAppend
-    // let onRemove
-    // let onShow
-    // let onToggle
-    // let onCollapse
-
-    // Display.stylize(this.element)
-
     element = this.element
 
     $window = element.contentWindow
     $document = element.contentDocument
 
-    // console.debug('display:_load')
-
     $window.addEventListener('resize', () => this.resize())
-
-    // this.resize()
-
-    // this.refresh()
 
     playbackElement = $document.querySelector('section.playback')
     settingsElement = $document.querySelector('section.settings')
@@ -146,38 +131,8 @@ class Display {
     this.settings = settings
 
     settings.on('change', configuration => {
-      // console.debug('display - settings on change')
       playback.configure(configuration)
     })
-
-    // onAppend = () => {
-    //   // console.debug('display:_load', 'onAppend()')
-    //   this.resize()
-    // }
-
-    // onRemove = () => {
-    //   // console.debug('display:_load', 'onRemove()')
-    //
-    //   this.resize()
-    // }
-
-    // onShow = () => {
-    //   // console.debug('display:_load', 'onShow()')
-    //
-    //   this.resize()
-    // }
-
-    // onToggle = () => {
-    //   // console.debug('display:_load', 'onToggle()')
-    //
-    //   this.resize()
-    // }
-
-    // onCollapse = () => {
-    //   // console.debug('display:_load', 'onCollapse()')
-    //
-    //   this.resize()
-    // }
 
     settings.on('click', () => this.resize())
     settings.on('append', () => this.resize())
@@ -194,112 +149,16 @@ class Display {
       .addEventListener('click', () => this._close())
 
     playback.full()
-
-    // console.debug(settings.debug())
-
-    // function ensurePlaybackElement () {
-    //   let that
-    //   let element
-    //   let display
-    //
-    //   that = $document.querySelector('section.playback')
-    //   element = that || createPlaybackElement()
-    //   display = new Playback(element)
-    //
-    //   // playbackElement = element
-    //   playback = display
-    // }
-    //
-    // function ensureSettingsElement () {
-    //   let that
-    //   let element
-    //   let display
-    //
-    //   that = $document.querySelector('section.settings')
-    //   element = that || createSettingsElement()
-    //   display = new Settings(element)
-    //
-    //   // settingsElement = element
-    //   settings = display
-    // }
-    //
-    // function createPlaybackElement () {
-    //   let element
-    //
-    //   element = $document.createElement('section')
-    //
-    //   element.classList.add('readerly')
-    //   element.classList.add('playback')
-    //
-    //   document.body.appendChild(element)
-    //
-    //   return element
-    // }
-    //
-    // function createSettingsElement () {
-    //   // let element
-    //
-    //   element = $document.createElement('section')
-    //
-    //   element.classList.add('readerly')
-    //   element.classList.add('settings')
-    //
-    //   document.body.appendChild(element)
-    //
-    //   return element
-    // }
   }
-  _ready ($document, $window) {
-    // console.log('loaded')
-
-    // let settingsButton
-    // let speedButton
-    // let closeButton
-    // let progressElement
-    //
-    // element
-    //   .querySelector('button.settings')
-    //   .addEventListener('click', () => this._settings())
-    //
-    // element
-    //   .querySelector('button.speed')
-    //   .addEventListener('click', () => this._speed())
-    //
-    // element
-    //   .querySelector('button.close')
-    //   .addEventListener('click', () => this._close())
-    //
-    // element
-    //   .querySelector('progress')
-    //   .addEventListener('click', it => this._progress(it))
-  }
+  _ready ($document, $window) {}
   _settings () {
-    // console.debug('display:_settings')
     this.settings.toggle()
-    // this.resize()
   }
-  _speed () {
-    // console.debug('display:_speed')
-  }
+  _speed () {}
   _close () {
-    // console.debug('display:_close')
     this.disable()
   }
-  _progress (e) {
-    // let progress
-    // let percent
-    // console.debug('display:_progress')
-
-    // progress = this.element.querySelector('progress')
-    // console.log(progress.clientX, progress.clientWidth, e.clientX)
-    // percent = e.clientX / progress.clientWidth
-    // progress.setAttribute('value', parseInt(progress.getAttribute('min'), 10) * percent)
-
-
-    // console.log(percent)
-    // console.log(this.element)
-    // console.log(e.x, e.y, progress.clientX, progress.clientWidth - prog)
-  }
+  _progress (e) {}
 
   resize () {
     let element
@@ -314,147 +173,47 @@ class Display {
     $window = element.contentWindow
     $document = element.contentDocument
 
-    // console.debug('display:resize')
-
     window.requestAnimationFrame(() => {
       style = $window.getComputedStyle($document.body)
-      // console.debug(style.getPropertyValue('height'))
       element.style.height = style.getPropertyValue('height')
       this.refresh()
     })
   }
-  refresh () {
-    // let userAgent
-    // userAgent = window.navigator.userAgent
-    // console.debug('display:refresh')
-    //
-    // if (/firefox\/5[78]/i.test(userAgent)) {
-    //   document.write('')
-    // }
-  }
+  refresh () {}
   toggle () {
-    // console.debug('display:toggle')
-
     return !this.enabled ? this.enable() : this.disable()
   }
   enable () {
-    // console.debug('display:enable')
-
-    // if (it) this.stream(it)
-
     this.open()
     this.focus()
   }
   disable () {
-    // console.debug('display:disable')
-
     this.blur()
     this.close()
   }
   close () {
-    // console.debug('display:close')
-
     this.remove()
     this.stop()
   }
   remove () {
-    // console.debug('display:remove')
-
     document.body.removeChild(this.element)
   }
   append () {
-    // console.debug('display:append')
-
     document.body.appendChild(this.element)
     this.element.style.height = '80px'
     this.resize()
   }
   stop () {
-    // console.debug('display:stop')
-
     this.timeout && clearTimeout(this.timeout)
   }
-  initialize () {
-    // console.debug('display:initialize')
-
-    // if (!this.initialized) {
-    //   this.listen()
-    // }
-    //
-    // this.initialized = true
-  }
+  initialize () {}
   open (playback) {
-    // console.debug('display:open')
-
     this.append()
     this.resize()
-    // this.initialize()
   }
-  stream (content) {
-    // let playbackElement
-    // let progressElement
-    // let words
-    // let read
-    //
-    // let span
-    // let text
-    //
-    // let maximum
-    //
-    // console.debug('display:stream')
-    //
-    // playbackElement = this.element.querySelector('.playback')
-    // progressElement = this.element.querySelector('progress')
-    //
-    // console.debug('display:stream', 'content.text', content.text)
-    //
-    // words = content.text.split(/\s+/g)
-    // maximum = words.length
-    //
-    // progressElement.setAttribute('max', maximum)
-    //
-    // read = () => {
-    //   let span
-    //   let text
-    //   let value
-    //
-    //   console.debug('display:stream', 'read()')
-    //
-    //   value = parseInt(progressElement.getAttribute('value'), 10)
-    //
-    //   removeChildren(playbackElement)
-    //
-    //   span = document.createElement('span')
-    //   text = document.createTextNode(words[value++])
-    //
-    //   progressElement.setAttribute('value', value)
-    //   console.log(value, maximum)
-    //
-    //   span.appendChild(text)
-    //   playbackElement.appendChild(span)
-    //
-    //   if (words.length > value) {
-    //     this.timeout = setTimeout(read, 1000 * 60 / 200)
-    //   }
-    // }
-    //
-    // read()
-    // removeChildren(playbackElement)
-    //
-    // function removeChildren (element) {
-    //   console.debug('display:stream', 'removeChildren()')
-    //
-    //   while (element.firstChild) {
-    //     element.removeChild(element.firstChild)
-    //   }
-    // }
-  }
+  stream (content) {}
   focus () {
-    // console.debug('display:focus')
-
     document.querySelectorAll('body > *').forEach(it => {
-      // console.debug('display:focus', 'querySelectorAll forEach')
-
       if (it !== this.element) {
         this.filter.set(it, it.style.filter)
         it.style.filter = 'blur(4px)'
@@ -464,11 +223,7 @@ class Display {
     this.element.style['z-index'] = zIndex.call(this) + 1
   }
   blur () {
-    // console.debug('display:blur')
-
     document.querySelectorAll('body > *').forEach(it => {
-      // console.debug('display:blur', 'querySelectorAll', 'forEach')
-
       if (this.filter.has(it)) {
         it.style.filter = this.filter.get(it)
       }

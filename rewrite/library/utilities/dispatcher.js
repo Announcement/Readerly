@@ -8,8 +8,6 @@ class Dispatcher {
   constructor () {
     $listener.set(this, {})
     $queue.set(this, {})
-
-    // console.debug(this.constructor.name, '<-', 'Dispatcher  ')
   }
 
   get listener () {
@@ -53,18 +51,14 @@ class Dispatcher {
     let forEachQueue
 
     forEachQueue = () => {
-      // let _listener
       let _queue
 
-      // let listener
       let queue
 
       let item
 
-      // _listener = $listener.get(this)
       _queue = $queue.get(this)
 
-      // listener = _listener[eventName]
       queue = _queue[eventName]
 
       while (queue.length) {
@@ -95,14 +89,8 @@ class Dispatcher {
 
   on (eventName, callback) {
     let _listener
-    // let _queue
 
     let listener
-    // let queue
-
-    // _queue = $queue.get(this)
-
-    // queue = _queue[eventName]
 
     this._ensure(eventName)
 
@@ -115,25 +103,11 @@ class Dispatcher {
     $listener.set(this, _listener)
 
     this._consume(eventName)
-
-    // _queue[eventName] = queue
-    //
-    // $queue.set(this, _queue)
   }
 
   dispatch (eventName, data = null) {
-    // let _listener
     let _queue
-
-    // let listener
     let queue
-
-    // _listener = $listener.get(this)
-
-    // listener = _listener[eventName]
-
-    // console.debug(this.constructor.name,
-    //   'Dispatcher:dispatch', 'eventName', eventName)
 
     this._ensure(eventName)
 
@@ -146,11 +120,6 @@ class Dispatcher {
 
     $queue.set(this, _queue)
     this._consume(eventName)
-
-
-    // _listener[eventName] = listener
-    //
-    // $listener.set(this, _listener)
   }
 
   debug () {

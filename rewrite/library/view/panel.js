@@ -9,8 +9,7 @@ class Panel extends Dispatcher {
     parent = it.parentNode
 
     super()
-    // console.debug(this.constructor.name, '<-', 'Panel')
-
+    
     this.element = element
     this.parent = parent
   }
@@ -22,7 +21,7 @@ class Panel extends Dispatcher {
   capture (navigation) {
 
   }
-  
+
   hide () {
     this.enabled && this.remove()
   }

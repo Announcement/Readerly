@@ -1,7 +1,7 @@
 import NavigationElement from './navigationelement'
 
 class Tab extends NavigationElement {
-  constructor(string) {
+  constructor (string) {
     super(string)
 
     this.element.classList.add('tab')
